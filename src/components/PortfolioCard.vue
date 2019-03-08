@@ -9,7 +9,12 @@
           </v-card-title>
           <v-card-text>
             <div>{{ cutWordsIfOver(card.description, 140) }}</div>
-            <h4>使用言語：<span v-for="(language, i) in card.languages" :key="i"> {{ language }} </span></h4>
+            <h4>
+              使用言語：
+              <span v-for="(language, i) in card.languages" :key="i">
+                {{ language + " " }}
+              </span>
+            </h4>
             <h4>{{ "作者：" + cutWordsIfOver(card.author, 30) }}</h4>
             <h4>{{ "いいね：" + card.good }}</h4>
           </v-card-text>
@@ -53,7 +58,7 @@ export default {
             "https://img-eshop.cdn.nintendo.net/i/5f4d7a7761aef871411cbd4e5440bba2d748c23271b71f52c3675981f8fcc5ab.jpg?w=1000",
           title: "ポートフォリオ SNS",
           description: "qqqqqqqqqqqqqqqqqqqqqqqqq",
-          languages: ["JavaScript", "PHP","colob", "sdgw", "seerwt", "ewerwe"],
+          languages: ["JavaScript", "PHP", "colob", "sdgw", "seerwt", "ewerwe"],
           good: 123,
           author: "3"
         },
