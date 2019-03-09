@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "express": "^4.16.4",
+    "firebase": "^5.8.6",
+    "firebaseui": "^3.5.2",
     "mysql2": "^1.6.5",
     "vue": "^2.6.6",
     "vue-router": "^3.0.1",
