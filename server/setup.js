@@ -1,9 +1,7 @@
-// const db = require('./db/connection');
+const { saveLocalUser } = require("./auth");
 
 const setup = function(app) {
-  app.use("/hello", async (req, res, next) => {
-    res.json("hello world");
-  });
+  app.use("/api/saveuser", saveLocalUser);
 };
 
 module.exports = setup;
