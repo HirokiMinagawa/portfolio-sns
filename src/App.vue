@@ -9,7 +9,7 @@
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <p v-if="user">{{ "こんにちは、" + user.displayName + "さん" }}</p>
-        <v-btn flat >ポートフォリオ投稿</v-btn>
+        <v-btn flat>ポートフォリオ投稿</v-btn>
         <v-btn flat v-if="user">マイページ</v-btn>
         <v-btn flat v-if="user" @click="signOut">ログアウト</v-btn>
         <v-btn v-else flat @click.stop="dialog = true">
@@ -63,6 +63,7 @@ export default {
     },
     signOut: function() {
       firebase.auth().signOut();
+      this.$router.push({ name: "Home" });
     },
     getLoginUser: function() {
       firebase.auth().onAuthStateChanged(user => {

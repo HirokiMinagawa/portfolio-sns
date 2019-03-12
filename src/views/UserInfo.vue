@@ -3,7 +3,7 @@
     <v-flex xs12 sm6 offset-sm3>
       <v-card>
         <v-spacer></v-spacer>
-        <v-btn class="edit" :to="{ name: 'UserInfoEdit'}" icon>
+        <v-btn v-show="editAuth" class="edit" :to="{ name: 'UserInfoEdit'}" icon>
           <v-icon>edit</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
@@ -13,15 +13,6 @@
         </v-card-title>
 
         <v-list two-line class="pl-5 pr-5">
-          <!-- <v-list-tile>
-            <v-list-tile-content>
-              <v-list-tile-sub-title>メールアドレス ※他ユーザーには非公開</v-list-tile-sub-title>
-              <div>{{ email }}</div>
-            </v-list-tile-content>
-          </v-list-tile>
-
-          <v-divider></v-divider> -->
-
           <v-flex v-show="!!selfIntroduction">
             <v-list-tile>
               <v-list-tile-content>
@@ -118,9 +109,12 @@
 </template>
 
 <script>
+import { checkAccessRights } from "@/lib/api-service";
+
 export default {
   data() {
     return {
+      editAuth: "",
       name: "皆川ヒロキ",
       profPic: "https://cdn.vuetifyjs.com/images/lists/ali.png",
       selfIntroduction:
@@ -209,8 +203,18 @@ export default {
     };
   },
   methods: {
-
+    checkEditAuth: async function() {
+      const { userId } = this.$route.params;
+      this.editAuth = await checkAccessRights(userId);
+    }
+  },
+  created() {
+    this.checkEditAuth();
+  },
+  watch: {
+    $route() {
+      this.checkEditAuth();
+    }
   }
 };
 </script>
-
