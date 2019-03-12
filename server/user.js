@@ -8,7 +8,6 @@ admin.initializeApp({
 
 const verifyUserToken = async idToken => {
   const decodedidToken = await admin.auth().verifyIdToken(idToken);
-  // console.log(decodedidToken);
   return decodedidToken;
 };
 
@@ -38,13 +37,6 @@ const saveLocalUser = async (req, res) => {
   if (!decodedidToken) {
     return res.status(401).json({ message: "ログインしてください。" });
   }
-  // const connection = await db.getConnection();
-  // const { uid, name, picture } = decodedidToken;
-  // const [results] = await connection.query(
-  //   "select id from users where users.auth_uid = ?",
-  //   [uid]
-  // );
-  // const user = results[0];
 
   const userId = await getLocalUserId(decodedidToken);
 
@@ -82,7 +74,32 @@ const getCurrentUserId = async (req, res, next) => {
   }
 };
 
+const deleteCurrentUser = async (req, res) => {
+  const authorization = req.header("authorization");
+  const idToken = authorization.split(" ")[1];
+  if (!idToken) {
+    return res.status(200).json({ message: "ログインしてください。" });
+  }
+
+  const decodedidToken = await verifyUserToken(idToken);
+
+  if (!decodedidToken) {
+    return res.status(200).json({ message: "ログインしてください。" });
+  }
+  const userId = await getLocalUserId(decodedidToken);
+  if (!userId) {
+    return res.status(200).json({ message: "ユーザー登録してください。" });
+  } else {
+    const connection = await db.getConnection();
+    const [results] = await connection.query("delete from users where id = ?", [
+      userId
+    ]);
+    return res.status(200).json({ message: "ユーザー情報を削除しました。" });
+  }
+};
+
 module.exports = {
   saveLocalUser,
-  getCurrentUserId
+  getCurrentUserId,
+  deleteCurrentUser
 };

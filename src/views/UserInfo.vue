@@ -3,7 +3,7 @@
     <v-flex xs12 sm6 offset-sm3>
       <v-card>
         <v-spacer></v-spacer>
-        <v-btn v-show="editAuth" class="edit" :to="{ name: 'UserInfoEdit'}" icon>
+        <v-btn v-show="editRights" class="edit" :to="{ name: 'UserInfoEdit'}" icon>
           <v-icon>edit</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
@@ -109,12 +109,12 @@
 </template>
 
 <script>
-import { checkAccessRights } from "@/lib/api-service";
+import { checkEditRights } from "@/lib/api-service";
 
 export default {
   data() {
     return {
-      editAuth: "",
+      editRights: false,
       name: "皆川ヒロキ",
       profPic: "https://cdn.vuetifyjs.com/images/lists/ali.png",
       selfIntroduction:
@@ -203,17 +203,17 @@ export default {
     };
   },
   methods: {
-    checkEditAuth: async function() {
+    checkEditRights: async function() {
       const { userId } = this.$route.params;
-      this.editAuth = await checkAccessRights(userId);
+      this.editRights = await checkEditRights(userId);
     }
   },
   created() {
-    this.checkEditAuth();
+    this.checkEditRights();
   },
   watch: {
     $route() {
-      this.checkEditAuth();
+      this.checkEditRights();
     }
   }
 };

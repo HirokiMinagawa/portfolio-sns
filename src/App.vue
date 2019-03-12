@@ -10,7 +10,7 @@
       <v-toolbar-items>
         <p v-if="user">{{ "こんにちは、" + user.displayName + "さん" }}</p>
         <v-btn flat>ポートフォリオ投稿</v-btn>
-        <v-btn flat v-if="user">マイページ</v-btn>
+        <v-btn flat v-if="user" @click="toMyPage">マイページ</v-btn>
         <v-btn flat v-if="user" @click="signOut">ログアウト</v-btn>
         <v-btn v-else flat @click.stop="dialog = true">
           <span>新規登録 or ログイン</span>
@@ -28,7 +28,7 @@
     </v-toolbar>
     <v-content>
       <v-alert v-model="alert" color="info" icon="info" @click="alert = false">{{ alertMessage }}</v-alert>
-      <router-view></router-view>
+      <router-view @makeAlert="makeAlert"></router-view>
     </v-content>
   </v-app>
 </template>
@@ -37,6 +37,7 @@
 import Auth from "@/components/Auth";
 import firebase from "@/lib/firebase";
 import { saveLoginUser } from "@/lib/api-service";
+import { getcurrentUserId } from "@/lib/api-service";
 
 export default {
   name: "App",
@@ -64,6 +65,7 @@ export default {
     signOut: function() {
       firebase.auth().signOut();
       this.$router.push({ name: "Home" });
+      this.makeAlert("ログアウトしました。");
     },
     getLoginUser: function() {
       firebase.auth().onAuthStateChanged(user => {
@@ -76,6 +78,10 @@ export default {
       setTimeout(() => {
         this.alert = false;
       }, 3000);
+    },
+    toMyPage: async function() {
+      const { currentUserId } = await getcurrentUserId();
+      this.$router.push({ name: "UserInfo", params: { userId: currentUserId} });
     }
   }
 };

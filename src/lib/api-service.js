@@ -17,7 +17,7 @@ export const saveLoginUser = async function() {
   return res.json();
 };
 
-const getcurrentUserId = async function() {
+export const getcurrentUserId = async function() {
   const idToken = await getUserToken();
   if (!idToken) return false;
   const res = await fetch(`/api/currentuserid`, {
@@ -28,7 +28,18 @@ const getcurrentUserId = async function() {
   return res.json();
 };
 
-export const checkAccessRights = async function(userId) {
+export const checkEditRights = async function(userId) {
   const { currentUserId } = await getcurrentUserId();
   return Number(userId) === Number(currentUserId);
 };
+
+export const deleteCurrentUser = async function() {
+  const idToken = await getUserToken();
+  if (!idToken) return false;
+  const res = await fetch(`/api/deletecurrentuser`, {
+    headers: {
+      Authorization: "Bearer " + idToken
+    }
+  });
+  return res.json();
+}
