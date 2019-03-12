@@ -13,14 +13,14 @@
         </v-card-title>
 
         <v-list two-line class="pl-5 pr-5">
-          <v-list-tile>
+          <!-- <v-list-tile>
             <v-list-tile-content>
               <v-list-tile-sub-title>メールアドレス ※他ユーザーには非公開</v-list-tile-sub-title>
               <div>{{ email }}</div>
             </v-list-tile-content>
           </v-list-tile>
 
-          <v-divider></v-divider>
+          <v-divider></v-divider> -->
 
           <v-flex v-show="!!selfIntroduction">
             <v-list-tile>
@@ -122,7 +122,6 @@ export default {
   data() {
     return {
       name: "皆川ヒロキ",
-      email: "fweefs@gmail.com",
       profPic: "https://cdn.vuetifyjs.com/images/lists/ali.png",
       selfIntroduction:
         "ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ",
@@ -209,6 +208,9 @@ export default {
       ]
     };
   },
+  methods: {
+
+  }
 };
 </script>
 

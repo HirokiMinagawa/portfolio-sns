@@ -25,7 +25,7 @@ const saveLocalUser = async (req, res) => {
     return res.status(401).json({ message: "ログインしてください。" });
   }
   const connection = await db.getConnection();
-  const { uid, name } = decodedidToken;
+  const { uid, name, picture } = decodedidToken;
   const [results] = await connection.query(
     "select id from users where users.auth_uid = ?",
     [uid]
@@ -37,8 +37,8 @@ const saveLocalUser = async (req, res) => {
     return res.status(200).json({ message: "ログインしました。" });
   } else {
     const [results] = await connection.query(
-      "insert into users(auth_uid, name) values(?,?)",
-      [uid, name]
+      "insert into users(auth_uid, name, prof_img_url) values(?,?,?)",
+      [uid, name, picture]
     );
     return res.status(200).json({ message: "登録しました。" });
   }

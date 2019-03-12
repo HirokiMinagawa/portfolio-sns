@@ -7,6 +7,7 @@ CREATE TABLE `users` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` TEXT,
   `auth_uid` VARCHAR(100) UNIQUE,
+  `prof_img_url` TEXT,
   `self_introduction` TEXT,
   `programming_experience` BIGINT,
   `github_account` TEXT,
