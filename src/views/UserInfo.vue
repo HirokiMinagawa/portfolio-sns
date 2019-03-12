@@ -84,12 +84,12 @@
 
           <v-divider></v-divider>
 
-          <v-container fluid grid-list-xl v-show="!!cards">
+          <v-container fluid grid-list-xl v-show="cards.length">
             <v-layout column wrap justify-start>
+              <v-list-tile>
+                <v-list-tile-title>ポートフォリオ一覧</v-list-tile-title>
+              </v-list-tile>
               <v-flex xs12 sm6 md4 lg3 v-for="card in cards" :key="card.id">
-                <v-list-tile>
-                  <v-list-tile-title>ポートフォリオ一覧</v-list-tile-title>
-                </v-list-tile>
                 <v-card :to="{ name: '#', params: { id: card.id } }">
                   <v-img :src="card.image" height="200px"></v-img>
                   <v-card-title primary-title>
@@ -116,6 +116,7 @@
     </v-flex>
   </v-layout>
 </template>
+
 <script>
 export default {
   data() {
@@ -208,17 +209,6 @@ export default {
       ]
     };
   },
-  methods: {
-    cutWordsIfOver: function(words, cutNum) {
-      let results = "";
-      if (words.length > cutNum) {
-        results = words.slice(0, cutNum) + "...";
-      } else {
-        results = words;
-      }
-      return results;
-    }
-  }
 };
 </script>
 
