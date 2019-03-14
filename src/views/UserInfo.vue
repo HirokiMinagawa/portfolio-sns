@@ -53,11 +53,11 @@
             <v-divider></v-divider>
           </v-flex>
 
-          <v-flex v-show="!!TwitterAccount">
+          <v-flex v-show="!!twitterAccount">
             <v-list-tile>
               <v-list-tile-content>
                 <v-list-tile-sub-title>Twitterアカウント</v-list-tile-sub-title>
-                <a :href="TwitterAccount">{{ TwitterAccount }}</a>
+                <a :href="twitterAccount">{{ twitterAccount }}</a>
               </v-list-tile-content>
             </v-list-tile>
             <v-divider></v-divider>
@@ -122,7 +122,7 @@ export default {
       programmingLanguage: "JavaScript",
       programmingExperience: "5",
       gitHubAccount: "https://github.com/",
-      TwitterAccount: "https://twitter.com/osakana373",
+      twitterAccount: "https://twitter.com/osakana373",
       otherURL: "https://www.twitch.tv/",
       otherUrlDescription: "ツイッチです。",
       cards: [

@@ -19,6 +19,29 @@ CREATE TABLE `users` (
   `updated_by` BIGINT,
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,    
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`created_by`) REFERENCES users(`id`),
-  FOREIGN KEY (`updated_by`) REFERENCES users(`id`)
+  FOREIGN KEY (`created_by`) REFERENCES users(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`updated_by`) REFERENCES users(`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `programming_languages` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `name` TEXT,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `user_programming_language` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT NOT NULL,
+  `programming_language_id` BIGINT NOT NULL,
+  `created_by` BIGINT,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_by` BIGINT,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,    
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`programming_language_id`) REFERENCES programming_languages(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`created_by`) REFERENCES users(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`updated_by`) REFERENCES users(`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

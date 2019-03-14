@@ -42,4 +42,23 @@ export const deleteCurrentUser = async function() {
     }
   });
   return res.json();
-}
+};
+
+export const updateUserInfo = async function(userInfo) {
+  const idToken = await getUserToken();
+  if (!idToken) return false;
+  const res = await fetch(`/api/userinfo`, {
+    method: "post",
+    body: JSON.stringify(userInfo),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + idToken
+    }
+  });
+  return res.json();
+};
+
+export const getProgrammingLanguageList = async function() {
+  const res = await fetch(`/api/programminglanguage`);
+  return res.json();
+};
