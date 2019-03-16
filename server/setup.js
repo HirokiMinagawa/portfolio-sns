@@ -5,6 +5,7 @@ const {
   updateUserInfo,
   getUserInfo
 } = require("./controller/user");
+const validators = require("./validators");
 
 const {
   getProgrammingLanguageList
@@ -16,8 +17,13 @@ const setup = function(app) {
   app.use("/api/saveuser", authUser, alreadyUserExists);
   app.use("/api/currentuserid", authUser, getCurrentUserId);
   app.use("/api/deletecurrentuser", authUser, deleteCurrentUser);
-  app.post("/api/userinfo", authUser, updateUserInfo);
-  app.get(`/api/userinfo/:userId`, getUserInfo)
+  app.post(
+    "/api/userinfo",
+    authUser,
+    validators.updateUserInfo,
+    updateUserInfo
+  );
+  app.get(`/api/userinfo/:userId`, getUserInfo);
   app.use("/api/programminglanguage", getProgrammingLanguageList);
 };
 

@@ -9,7 +9,7 @@ CREATE TABLE `users` (
   `auth_uid` VARCHAR(100) UNIQUE,
   `prof_img_url` TEXT,
   `self_introduction` TEXT,
-  `programming_experience` BIGINT,
+  `programming_experience` FlOAT,
   `github_account` TEXT,
   `twitter_account` TEXT,
   `other_url` TEXT,

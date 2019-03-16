@@ -91,9 +91,13 @@ export default {
         otherURL: this.otherURL,
         otherUrlDescription: this.otherUrlDescription
       };
-      const { message } = await updateUserInfo(userInfo);
-      this.$router.push({ name: "UserInfo" });
-      this.$emit("makeAlert", message);
+      const res = await updateUserInfo(userInfo);
+      if (res.errors) {
+        this.$emit("makeAlert", "入力内容にエラーがあります。");
+      } else {
+        this.$router.push({ name: "UserInfo" });
+        this.$emit("makeAlert", res.message);
+      }
     },
     getProgrammingLanguageList: async function() {
       const res = await getProgrammingLanguageList();

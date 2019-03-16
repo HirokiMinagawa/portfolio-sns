@@ -1,4 +1,5 @@
 const db = require("../db/connection");
+const { validationResult } = require("express-validator/check");
 
 const alreadyUserExists = async (req, res, next) => {
   return res.status(200).json({ message: "ログインしました。" });
@@ -23,6 +24,9 @@ const deleteCurrentUser = async (req, res, next) => {
 };
 
 const updateUserInfo = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty())
+    return res.status(400).json({ errors: errors.array() });
   const { userId } = req;
   try {
     const {
