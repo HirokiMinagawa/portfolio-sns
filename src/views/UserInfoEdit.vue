@@ -2,8 +2,9 @@
   <v-container>
     <v-layout v-if="editRights" column wrap>
       <v-flex xs12 sm10 md8 lg6>
+        <v-text-field disabled v-model="name" label="名前"></v-text-field>
+        <v-text-field disabled v-model="profImgUrl" label="プロフィール画像URL"></v-text-field>
         <v-form @submit.prevent="updateUserInfo">
-          <h2>編集可能なプロフィール</h2>
           <v-textarea v-model="selfIntroduction" label="自己紹介"></v-textarea>
           <v-combobox
             v-model="programmingLanguages"
@@ -17,7 +18,7 @@
           <v-text-field v-model="twitterAccount" label="Twitterアカウント"></v-text-field>
           <v-text-field v-model="otherURL" label="他のURL"></v-text-field>
           <v-text-field v-model="otherUrlDescription" label="他のURL 説明文"></v-text-field>
-          <v-btn type="submit">ユーザー情報を更新</v-btn>
+          <v-btn type="submit">更新</v-btn>
         </v-form>
         <v-btn depressed color="error" @click.stop="dialog = true">ユーザー情報を全て削除</v-btn>
 
@@ -41,7 +42,8 @@ import {
   checkEditRights,
   deleteCurrentUser,
   updateUserInfo,
-  getProgrammingLanguageList
+  getProgrammingLanguageList,
+  getUserInfo
 } from "@/lib/api-service";
 import firebase from "@/lib/firebase";
 
@@ -50,6 +52,8 @@ export default {
     return {
       dialog: false,
       editRights: true,
+      name: "",
+      profImgUrl: "",
       selfIntroduction: "",
       programmingLanguages: "",
       programmingExperience: "",
@@ -94,15 +98,35 @@ export default {
     getProgrammingLanguageList: async function() {
       const res = await getProgrammingLanguageList();
       this.programmingLanguageList = res.name;
+    },
+    getUserInfo: async function() {
+      const { userId } = this.$route.params;
+      const userInfo = await getUserInfo(userId);
+      //ポートフォリオも出来しだい
+      this.name = userInfo.name;
+      this.profImgUrl = userInfo.prof_img_url;
+      this.selfIntroduction = userInfo.self_introduction;
+      this.programmingLanguages = userInfo.userProgrammingLanguages;
+      this.programmingExperience = userInfo.programming_experience;
+      this.gitHubAccount = userInfo.github_account;
+      this.twitterAccount = userInfo.twitter_account;
+      this.otherURL = userInfo.other_url;
+      this.otherUrlDescription = userInfo.other_url_comment;
+      if (!this.name) {
+        this.$router.push({ name: "Home" });
+        this.$emit("makeAlert", "ユーザーが見つかりません。");
+      }
     }
   },
   created() {
     this.checkEditRights();
     this.getProgrammingLanguageList();
+    this.getUserInfo();
   },
   watch: {
     $route() {
       this.checkEditRights();
+      this.getUserInfo();
     }
   }
 };
