@@ -23,11 +23,16 @@
             <v-divider></v-divider>
           </v-flex>
 
-          <v-flex v-show="!!programmingLanguage">
+          <v-flex v-show="!!programmingLanguages.length">
             <v-list-tile>
               <v-list-tile-content>
                 <v-list-tile-sub-title>得意言語</v-list-tile-sub-title>
-                <div>{{ programmingLanguage }}</div>
+                <div>
+                  <v-chip
+                    v-for="(programmingLanguage, i) in programmingLanguages"
+                    :key="i"
+                  >{{ programmingLanguage }}</v-chip>
+                </div>
               </v-list-tile-content>
             </v-list-tile>
             <v-divider></v-divider>
@@ -67,7 +72,7 @@
             <v-list-tile>
               <v-list-tile-content>
                 <v-list-tile-sub-title>その他URL</v-list-tile-sub-title>
-                <div>{{ otherUrlComment }}</div>
+                <div>{{ otherUrlDescription }}</div>
                 <a :href="otherURL">{{ otherURL }}</a>
               </v-list-tile-content>
             </v-list-tile>
@@ -123,7 +128,7 @@ export default {
       gitHubAccount: "",
       twitterAccount: "",
       otherURL: "",
-      otherUrlComment: "",
+      otherUrlDescription: "",
       cards: [
         {
           id: 1,
@@ -218,8 +223,8 @@ export default {
       this.gitHubAccount = userInfo.github_account;
       this.twitterAccount = userInfo.twitter_account;
       this.otherURL = userInfo.other_url;
-      this.otherUrlComment = userInfo.other_url_comment;
-      if(!this.name) {
+      this.otherUrlDescription = userInfo.other_url_comment;
+      if (!this.name) {
         this.$router.push({ name: "Home" });
         this.$emit("makeAlert", "ユーザーが見つかりません。");
       }

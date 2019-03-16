@@ -88,7 +88,7 @@ export default {
         otherUrlDescription: this.otherUrlDescription
       };
       const { message } = await updateUserInfo(userInfo);
-      this.$router.push({ name: "Home" });
+      this.$router.push({ name: "UserInfo" });
       this.$emit("makeAlert", message);
     },
     getProgrammingLanguageList: async function() {
