@@ -7,7 +7,7 @@
           <v-icon>edit</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
-        <v-img :src="profPic" height="300px" alt="プロフィール画像"></v-img>
+        <v-img :src="profImgUrl" height="300px" alt="プロフィール画像"></v-img>
         <v-card-title>
           <div class="display-1 pl-5 pt-5">{{ name }}</div>
         </v-card-title>
@@ -67,7 +67,7 @@
             <v-list-tile>
               <v-list-tile-content>
                 <v-list-tile-sub-title>その他URL</v-list-tile-sub-title>
-                <div>{{ otherUrlDescription }}</div>
+                <div>{{ otherUrlComment }}</div>
                 <a :href="otherURL">{{ otherURL }}</a>
               </v-list-tile-content>
             </v-list-tile>
@@ -109,22 +109,21 @@
 </template>
 
 <script>
-import { checkEditRights } from "@/lib/api-service";
+import { checkEditRights, getUserInfo } from "@/lib/api-service";
 
 export default {
   data() {
     return {
       editRights: false,
-      name: "皆川ヒロキ",
-      profPic: "https://cdn.vuetifyjs.com/images/lists/ali.png",
-      selfIntroduction:
-        "ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ",
-      programmingLanguage: "JavaScript",
-      programmingExperience: "5",
-      gitHubAccount: "https://github.com/",
-      twitterAccount: "https://twitter.com/osakana373",
-      otherURL: "https://www.twitch.tv/",
-      otherUrlDescription: "ツイッチです。",
+      name: "",
+      profImgUrl: "",
+      selfIntroduction: "",
+      programmingLanguages: "",
+      programmingExperience: "",
+      gitHubAccount: "",
+      twitterAccount: "",
+      otherURL: "",
+      otherUrlComment: "",
       cards: [
         {
           id: 1,
@@ -206,14 +205,34 @@ export default {
     checkEditRights: async function() {
       const { userId } = this.$route.params;
       this.editRights = await checkEditRights(userId);
+    },
+    getUserInfo: async function() {
+      const { userId } = this.$route.params;
+      const userInfo = await getUserInfo(userId);
+      //ポートフォリオも出来しだい
+      this.name = userInfo.name;
+      this.profImgUrl = userInfo.prof_img_url;
+      this.selfIntroduction = userInfo.self_introduction;
+      this.programmingLanguages = userInfo.userProgrammingLanguages;
+      this.programmingExperience = userInfo.programming_experience;
+      this.gitHubAccount = userInfo.github_account;
+      this.twitterAccount = userInfo.twitter_account;
+      this.otherURL = userInfo.other_url;
+      this.otherUrlComment = userInfo.other_url_comment;
+      if(!this.name) {
+        this.$router.push({ name: "Home" });
+        this.$emit("makeAlert", "ユーザーが見つかりません。");
+      }
     }
   },
   created() {
     this.checkEditRights();
+    this.getUserInfo();
   },
   watch: {
     $route() {
       this.checkEditRights();
+      this.getUserInfo();
     }
   }
 };

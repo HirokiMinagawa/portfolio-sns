@@ -2,7 +2,8 @@ const {
   alreadyUserExists,
   getCurrentUserId,
   deleteCurrentUser,
-  updateUserInfo
+  updateUserInfo,
+  getUserInfo
 } = require("./controller/user");
 
 const {
@@ -16,6 +17,7 @@ const setup = function(app) {
   app.use("/api/currentuserid", authUser, getCurrentUserId);
   app.use("/api/deletecurrentuser", authUser, deleteCurrentUser);
   app.post("/api/userinfo", authUser, updateUserInfo);
+  app.get(`/api/userinfo/:userId`, getUserInfo)
   app.use("/api/programminglanguage", getProgrammingLanguageList);
 };
 

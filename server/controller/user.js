@@ -67,9 +67,35 @@ const updateUserInfo = async (req, res, next) => {
   }
 };
 
+const getUserInfo = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const connection = await db.getConnection();
+    const [results] = await connection.query(
+      "select name, prof_img_url, self_introduction, programming_experience, github_account, twitter_account, other_url, other_url_comment from users where id = ?",
+      [userId]
+    );
+    const user = results[0];
+    if (!user) {
+      return res.status(401).json({ message: "ユーザーが見つかりません。" });
+    } else {
+      const [results] = await connection.query(
+        "select name from user_programming_language upl inner join programming_languages pl on upl.programming_language_id = pl.id where user_id = ?;",
+        [userId]
+      );
+      user.userProgrammingLanguages = results.map(obj => obj.name);
+      //portfolioテーブルから同じuserIdの作品を取得
+      return res.status(200).json(user);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   alreadyUserExists,
   getCurrentUserId,
   deleteCurrentUser,
-  updateUserInfo
+  updateUserInfo,
+  getUserInfo
 };
