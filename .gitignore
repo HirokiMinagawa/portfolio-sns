@@ -20,4 +20,4 @@ yarn-error.log*
 *.sln
 *.sw*
 
-server/config.js
+./server/config.js
