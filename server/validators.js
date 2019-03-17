@@ -15,6 +15,9 @@ const updateUserInfo = [
     .isFloat({ min: 0.1, max: 99 })
 ];
 
+const savePortfolio = [];
+
 module.exports = {
-  updateUserInfo
+  updateUserInfo,
+  savePortfolio
 };

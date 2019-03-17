@@ -69,3 +69,17 @@ export const getUserInfo = async function(userId) {
   });
   return res.json();
 };
+
+export const createPortfolio = async function(portfolioInfo) {
+  const idToken = await getUserToken();
+  if (!idToken) return false;
+  const res = await fetch(`/api/portfolio`, {
+    method: "post",
+    body: JSON.stringify(portfolioInfo),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + idToken
+    }
+  });
+  return res.json();
+}

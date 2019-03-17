@@ -1,7 +1,5 @@
 USE `portfoliosns`;
 
-INSERT INTO `users` (`name`,`prof_img_url`) VALUES ("sample","https://www.pokemon.co.jp/ex/pika_vee/story/images/img_180713_08_01.png");
-
 INSERT INTO `programming_languages` (`name`) VALUES ("C");
 INSERT INTO `programming_languages` (`name`) VALUES ("C++");
 INSERT INTO `programming_languages` (`name`) VALUES ("C#");
