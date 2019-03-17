@@ -6,7 +6,7 @@ import store from "./store";
 import wordUtils from "./lib/word-utils";
 
 Vue.config.productionTip = false;
-Vue.mixin(wordUtils)
+Vue.mixin(wordUtils);
 
 new Vue({
   router,

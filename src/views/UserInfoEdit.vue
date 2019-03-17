@@ -4,21 +4,33 @@
       <v-flex xs12 sm10 md8 lg6>
         <v-text-field disabled v-model="name" label="名前"></v-text-field>
         <v-text-field disabled v-model="profImgUrl" label="プロフィール画像URL"></v-text-field>
-        <v-form @submit.prevent="updateUserInfo">
-          <v-textarea v-model="selfIntroduction" label="自己紹介"></v-textarea>
+        <v-form ref="form" lazy-validation v-model="valid" @submit.prevent="submit">
+          <v-textarea
+            v-model="selfIntroduction"
+            label="自己紹介"
+            :counter="50"
+            :rules="selfIntroductionRules"
+            required
+          ></v-textarea>
           <v-combobox
             v-model="programmingLanguages"
             :items="programmingLanguageList"
             label="得意なプログラミング言語"
+            :rules="[v => v.length >= 1 || '入力必須項目です。']"
+            required
             multiple
             chips
           ></v-combobox>
-          <v-text-field v-model="programmingExperience" label="プログラミング経験年数"></v-text-field>
-          <v-text-field v-model="gitHubAccount" label="GitHubアカウント"></v-text-field>
-          <v-text-field v-model="twitterAccount" label="Twitterアカウント"></v-text-field>
-          <v-text-field v-model="otherURL" label="他のURL"></v-text-field>
+          <v-text-field
+            v-model="programmingExperience"
+            label="プログラミング経験年数"
+            :rules="programmingExperienceRules"
+          ></v-text-field>
+          <v-text-field v-model="gitHubAccount" label="GitHubアカウント" :rules="isNullOrUrl"></v-text-field>
+          <v-text-field v-model="twitterAccount" label="Twitterアカウント" :rules="isNullOrUrl"></v-text-field>
+          <v-text-field v-model="otherURL" label="他のURL" :rules="isNullOrUrl"></v-text-field>
           <v-text-field v-model="otherUrlDescription" label="他のURL 説明文"></v-text-field>
-          <v-btn type="submit">更新</v-btn>
+          <v-btn :disabled="!valid" type="submit">更新</v-btn>
         </v-form>
         <v-btn depressed color="error" @click.stop="dialog = true">ユーザー情報を全て削除</v-btn>
 
@@ -50,6 +62,7 @@ import firebase from "@/lib/firebase";
 export default {
   data() {
     return {
+      valid: true,
       dialog: false,
       editRights: true,
       name: "",
@@ -61,7 +74,18 @@ export default {
       twitterAccount: "",
       otherURL: "",
       otherUrlDescription: "",
-      programmingLanguageList: []
+      programmingLanguageList: [],
+      selfIntroductionRules: [
+        v => !!v || "入力必須項目です。",
+        v => (v && v.length <= 50) || "50文字以内で入力してください。"
+      ],
+      programmingExperienceRules: [
+        v => !!v || "入力必須項目です。",
+        v =>
+          (parseFloat(v) && v >= 0.1 && v <= 99) ||
+          "0.1より大きく、99より小さい数値を入力してください。"
+      ],
+      isNullOrUrl: [v => !v || /http/.test(v) || "URLを入力してください。"]
     };
   },
   methods: {
@@ -120,12 +144,16 @@ export default {
         this.$router.push({ name: "Home" });
         this.$emit("makeAlert", "ユーザーが見つかりません。");
       }
+    },
+    submit: function() {
+      this.updateUserInfo();
     }
   },
-  created() {
+  mounted() {
     this.checkEditRights();
     this.getProgrammingLanguageList();
     this.getUserInfo();
+    this.$refs.form.resetValidation();
   },
   watch: {
     $route() {

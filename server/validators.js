@@ -5,7 +5,7 @@ const updateUserInfo = [
     .not()
     .isEmpty()
     .isString()
-    .isLength({ max: 300 }),
+    .isLength({ max: 50 }),
   check("programmingLanguages")
     .not()
     .isEmpty(),
