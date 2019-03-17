@@ -4,7 +4,6 @@ const config = require("../config").db;
 module.exports = {
   getConnection: async () => {
     const connection = await mysql.createConnection(config);
-
     return connection;
   }
 };
