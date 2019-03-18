@@ -3,13 +3,21 @@
     <v-layout column wrap>
       <v-flex xs12 sm10 md8 lg6>
         <v-form ref="form" lazy-validation v-model="valid" @submit.prevent="submit">
-          <v-text-field v-model="portfolioUrl" label="ポートフォリオURL"></v-text-field>
-          <v-text-field v-model="title" label="タイトル"></v-text-field>
-          <v-textarea v-model="description" label="説明文"></v-textarea>
+          <v-text-field v-model="portfolioUrl" :rules="isUrl" required label="ポートフォリオURL"></v-text-field>
+          <v-text-field v-model="title" label="タイトル" :counter="30" :rules="titleRules" required></v-text-field>
+          <v-textarea
+            v-model="description"
+            label="説明文"
+            :counter="140"
+            :rules="descriptionRules"
+            required
+          ></v-textarea>
           <v-combobox
             v-model="programmingLanguages"
             :items="programmingLanguageList"
             label="使用言語"
+            :rules="[v => v.length >= 1 || '入力必須項目です。']"
+            required
             multiple
             chips
           ></v-combobox>
@@ -36,7 +44,19 @@ export default {
       title: "",
       description: "",
       programmingLanguages: [],
-      programmingLanguageList: []
+      programmingLanguageList: [],
+      isUrl: [
+        v => !!v || "入力必須項目です。",
+        v => /http/.test(v) || "URLを入力してください。"
+      ],
+      titleRules: [
+        v => !!v || "入力必須項目です。",
+        v => (v && v.length <= 30) || "30文字以内で入力してください。"
+      ],
+      descriptionRules: [
+        v => !!v || "入力必須項目です。",
+        v => (v && v.length <= 140) || "140文字以内で入力してください。"
+      ]
     };
   },
   methods: {
@@ -75,7 +95,7 @@ export default {
   mounted() {
     this.checkCreateRights();
     this.getProgrammingLanguageList();
-    // this.$refs.form.resetValidation();
+    this.$refs.form.resetValidation();
   },
   watch: {
     $route() {
