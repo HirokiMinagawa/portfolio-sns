@@ -19,10 +19,12 @@ const savePortfolio = async (req, res, next) => {
         "select id from programming_languages where name = ?",
         [programmingLanguages[i]]
       );
-      await connection.query(
-        "insert into `portfolio_programming_language` (portfolio_id, programming_language_id) VALUES (?, ?);",
-        [insertId, results[0].id]
-      );
+      if (results[0]) {
+        await connection.query(
+          "insert into `portfolio_programming_language` (portfolio_id, programming_language_id) VALUES (?, ?);",
+          [insertId, results[0].id]
+        );
+      }
     }
     return res.status(200).json({ message: "ポートフォリオを登録しました。" });
   } catch (error) {

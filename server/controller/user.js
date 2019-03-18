@@ -60,10 +60,12 @@ const updateUserInfo = async (req, res, next) => {
         "select id from programming_languages where name = ?",
         [programmingLanguages[i]]
       );
-      await connection.query(
-        "INSERT INTO `user_programming_language` (user_id, programming_language_id) VALUES (?, ?);",
-        [userId, results[0].id]
-      );
+      if (results[0]) {
+        await connection.query(
+          "INSERT INTO `user_programming_language` (user_id, programming_language_id) VALUES (?, ?);",
+          [userId, results[0].id]
+        );
+      }
     }
     return res.status(200).json({ message: "ユーザー情報を更新しました。" });
   } catch (error) {

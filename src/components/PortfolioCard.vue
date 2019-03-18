@@ -5,7 +5,7 @@
         <v-card :to="{ name: '#', params: { id: card.id } }">
           <v-img :src="card.image" height="200px"></v-img>
           <v-card-title primary-title>
-            <h3 class="headline">{{ cutWordsIfOver(card.title, 50) }}</h3>
+            <h3 class="headline">{{ cutWordsIfOver(card.title, 30) }}</h3>
           </v-card-title>
           <v-card-text>
             <div>{{ cutWordsIfOver(card.description, 140) }}</div>
