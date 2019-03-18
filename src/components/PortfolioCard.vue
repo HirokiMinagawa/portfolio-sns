@@ -11,9 +11,7 @@
             <div>{{ cutWordsIfOver(card.description, 140) }}</div>
             <h4>
               使用言語：
-              <span v-for="(language, i) in card.languages" :key="i">
-                {{ language + " " }}
-              </span>
+              <span v-for="(language, i) in card.languages" :key="i">{{ language + " " }}</span>
             </h4>
             <h4>{{ "作者：" + cutWordsIfOver(card.author, 30) }}</h4>
             <h4>{{ "いいね：" + card.good }}</h4>
@@ -31,8 +29,7 @@ export default {
       cards: [
         {
           id: 1,
-          image:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_R1q0635pY6k2PcnjB8LHydRlRfQNmdnWGBikXTlEGbVIvVpK4A",
+          image: "",
           title:
             "ポートフォリオ SNSa twieifj saeifje wefjwoeij weojfwoie wefojwefoj",
           description:
@@ -104,6 +101,6 @@ export default {
         }
       ]
     };
-  },
+  }
 };
 </script>

@@ -3,7 +3,9 @@ import Router from "vue-router";
 import Home from "./views/Home.vue";
 import UserInfo from "./views/UserInfo.vue";
 import UserInfoEdit from "./views/UserInfoEdit.vue";
-import PortfolioCreate from "./views/PortfolioCreate.vue"
+import PortfolioCreate from "./views/PortfolioCreate.vue";
+import PortfolioInfo from "./views/PortfolioInfo.vue";
+
 Vue.use(Router);
 
 export default new Router({
@@ -27,6 +29,11 @@ export default new Router({
       path: "/portfolio/new",
       name: "PortfolioCreate",
       component: PortfolioCreate
+    },
+    {
+      path: "/portfolio/:portfolioId",
+      name: "PortfolioInfo",
+      component: PortfolioInfo
     }
   ]
 });

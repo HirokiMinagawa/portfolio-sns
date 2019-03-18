@@ -83,3 +83,7 @@ export const createPortfolio = async function(portfolioInfo) {
   });
   return res.json();
 }
+
+export const getPortfolioInfo = async function() {
+  //処理をかく
+}
