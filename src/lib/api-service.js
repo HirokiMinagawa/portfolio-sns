@@ -84,6 +84,9 @@ export const createPortfolio = async function(portfolioInfo) {
   return res.json();
 }
 
-export const getPortfolioInfo = async function() {
-  //処理をかく
+export const getPortfolioInfo = async function(portfolioId) {
+  const res = await fetch(`/api/portfolioinfo/${portfolioId}`, {
+    method: "get"
+  });
+  return res.json();
 }

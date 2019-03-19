@@ -8,6 +8,7 @@
         </v-btn>
         <v-spacer></v-spacer>
         <v-img :src="thumbnail" height="300px" alt="サムネイル"></v-img>
+        <a class="pl-5" :href="portfolioUrl">{{ portfolioUrl }}</a>
         <v-card-title>
           <div class="display-1 pl-5 pt-5">{{ title }}</div>
         </v-card-title>
@@ -67,33 +68,42 @@ export default {
   data() {
     return {
       editRights: false,
-      description:
-        "あああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ",
-      portfolioUrl: "https://vuejsexamples.com/",
-      title: "ポートフォリオタイトル",
-      programmingLanguages: ["C"],
-      userName: "あいう",
-      like: 123,
+      description: "",
+      portfolioUrl: "",
+      title: "",
+      programmingLanguages: [],
+      userName: "",
+      userId: 0,
+      like: 0,
       thumbnail: ""
     };
   },
   methods: {
     checkEditRights: async function() {
-      const { userId } = this.$route.params;
-      this.editRights = await checkEditRights(userId);
+      this.editRights = await checkEditRights(this.userId);
     },
     getPortfolioInfo: async function() {
-      //処理を書く
-      //ポートフォリオ テーブルの情報と、ユーザーIDと名前を取得。現在のユーザーと一致した場合は編集ボタンを表示。
+      //ライクとサムネイルも実装
+      const { portfolioId } = this.$route.params;
+      const portfolioInfo = await getPortfolioInfo(portfolioId);
+      this.portfolioUrl = portfolioInfo.url;
+      this.title = portfolioInfo.title;
+      this.description = portfolioInfo.description;
+      this.userId = portfolioInfo.created_by;
+      this.userName = portfolioInfo.userName;
+      this.programmingLanguages = portfolioInfo.portfolioProgrammingLanguages;
+      this.checkEditRights();
+      if (!this.portfolioUrl) {
+        this.$router.push({ name: "Home" });
+        this.$emit("makeAlert", "ポートフォリオが見つかりません。");
+      }
     }
   },
   created() {
-    this.checkEditRights();
     this.getPortfolioInfo();
   },
   watch: {
     $route() {
-      this.checkEditRights();
       this.getPortfolioInfo();
     }
   }
