@@ -83,7 +83,7 @@ export default {
       this.editRights = await checkEditRights(this.userId);
     },
     getPortfolioInfo: async function() {
-      //ライクとサムネイルも実装
+      //ライクも実装
       const { portfolioId } = this.$route.params;
       const portfolioInfo = await getPortfolioInfo(portfolioId);
       this.portfolioUrl = portfolioInfo.url;

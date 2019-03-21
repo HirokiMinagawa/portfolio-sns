@@ -58,11 +58,12 @@ const getPortfolioInfo = async (req, res, next) => {
         [userId]
       );
       const user = resultsOfUser[0];
+      portfolio.userName = user.name;
+
       const [resultsOfProgrammingLanguage] = await connection.query(
         "select name from portfolio_programming_language ppl inner join programming_languages pl on ppl.programming_language_id = pl.id where portfolio_id = ?;",
         [portfolioId]
       );
-      portfolio.userName = user.name;
       portfolio.portfolioProgrammingLanguages = resultsOfProgrammingLanguage.map(
         obj => obj.name
       );
