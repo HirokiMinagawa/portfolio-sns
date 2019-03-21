@@ -2,6 +2,8 @@
 node_modules
 /dist
 
+server/config.js
+
 # local env files
 .env.local
 .env.*.local
@@ -20,4 +22,4 @@ yarn-error.log*
 *.sln
 *.sw*
 
-server/config.js
+

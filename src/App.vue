@@ -9,7 +9,7 @@
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <p v-if="user">{{ "こんにちは、" + user.displayName + "さん" }}</p>
-        <v-btn flat>ポートフォリオ投稿</v-btn>
+        <v-btn flat @click="toPortfolioCreate">ポートフォリオ投稿</v-btn>
         <v-btn flat v-if="user" @click="toMyPage">マイページ</v-btn>
         <v-btn flat v-if="user" @click="signOut">ログアウト</v-btn>
         <v-btn v-else flat @click.stop="dialog = true">
@@ -81,7 +81,13 @@ export default {
     },
     toMyPage: async function() {
       const { currentUserId } = await getcurrentUserId();
-      this.$router.push({ name: "UserInfo", params: { userId: currentUserId} });
+      this.$router.push({
+        name: "UserInfo",
+        params: { userId: currentUserId }
+      });
+    },
+    toPortfolioCreate: function() {
+      this.$router.push({ name: "PortfolioCreate" });
     }
   }
 };

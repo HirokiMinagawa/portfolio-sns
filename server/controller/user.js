@@ -1,5 +1,6 @@
 const db = require("../db/connection");
 const { validationResult } = require("express-validator/check");
+const { getPortfolioInfoById } = require("../lib/portfolio-utils");
 
 const alreadyUserExists = async (req, res, next) => {
   return res.status(200).json({ message: "ログインしました。" });
@@ -60,10 +61,12 @@ const updateUserInfo = async (req, res, next) => {
         "select id from programming_languages where name = ?",
         [programmingLanguages[i]]
       );
-      await connection.query(
-        "INSERT INTO `user_programming_language` (user_id, programming_language_id) VALUES (?, ?);",
-        [userId, results[0].id]
-      );
+      if (results[0]) {
+        await connection.query(
+          "INSERT INTO `user_programming_language` (user_id, programming_language_id) VALUES (?, ?);",
+          [userId, results[0].id]
+        );
+      }
     }
     return res.status(200).json({ message: "ユーザー情報を更新しました。" });
   } catch (error) {
@@ -83,12 +86,27 @@ const getUserInfo = async (req, res, next) => {
     if (!user) {
       return res.status(401).json({ message: "ユーザーが見つかりません。" });
     } else {
-      const [results] = await connection.query(
+      const [resultsOfprogrammingLanguage] = await connection.query(
         "select name from user_programming_language upl inner join programming_languages pl on upl.programming_language_id = pl.id where user_id = ?;",
         [userId]
       );
-      user.userProgrammingLanguages = results.map(obj => obj.name);
-      //portfolioテーブルから同じuserIdの作品を取得
+      user.programmingLanguages = resultsOfprogrammingLanguage.map(
+        obj => obj.name
+      );
+
+      const [resultsOfPortfolio] = await connection.query(
+        "select id from portfolios where created_by = ?;",
+        [userId]
+      );
+      let portfolioIds = resultsOfPortfolio[0];
+      if (portfolioIds) {
+        const portfolios = [];
+        for (let i = 0; i < resultsOfPortfolio.length; i++) {
+          portfolios[i] = await getPortfolioInfoById(resultsOfPortfolio[i].id);
+        }
+        user.portfolios = portfolios;
+      }
+      //ポートフォリオのライク数も実装
       return res.status(200).json(user);
     }
   } catch (error) {

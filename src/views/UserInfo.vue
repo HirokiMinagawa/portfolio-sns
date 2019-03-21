@@ -80,28 +80,26 @@
 
           <v-divider></v-divider>
 
-          <v-container fluid grid-list-xl v-show="cards.length">
+          <v-container fluid grid-list-xl v-show="!!portfolios">
             <v-layout column wrap justify-start>
               <v-list-tile>
                 <v-list-tile-title>ポートフォリオ一覧</v-list-tile-title>
               </v-list-tile>
-              <v-flex xs12 sm6 md4 lg3 v-for="card in cards" :key="card.id">
-                <v-card :to="{ name: '#', params: { id: card.id } }">
-                  <v-img :src="card.image" height="200px"></v-img>
+              <v-flex xs12 sm6 md4 lg3 v-for="portfolio in portfolios" :key="portfolio.id">
+                <v-card :to="{name: 'PortfolioInfo', params: { portfolioId: portfolio.id }}">
+                  <v-img :src="portfolio.thumbnail_url" height="200px"></v-img>
                   <v-card-title primary-title>
-                    <h3 class="headline">{{ cutWordsIfOver(card.title, 50) }}</h3>
+                    <h3 class="headline">{{ portfolio.title }}</h3>
                   </v-card-title>
                   <v-card-text>
-                    <div>{{ cutWordsIfOver(card.description, 140) }}</div>
-                    <h4>
-                      使用言語：
-                      <span
-                        v-for="(language, i) in card.languages"
+                    <div>{{ portfolio.description }}</div>
+                    <h4>使用言語：
+                      <v-chip
+                        v-for="(programmingLanguage, i) in portfolio.programmingLanguages"
                         :key="i"
-                      >{{ language + " " }}</span>
+                      >{{ programmingLanguage }}</v-chip>
                     </h4>
-                    <h4>{{ "作者：" + cutWordsIfOver(card.author, 30) }}</h4>
-                    <h4>{{ "いいね：" + card.good }}</h4>
+                    <h4>{{ "いいね：" + portfolio.good }}</h4>
                   </v-card-text>
                 </v-card>
               </v-flex>
@@ -129,81 +127,7 @@ export default {
       twitterAccount: "",
       otherURL: "",
       otherUrlDescription: "",
-      cards: [
-        {
-          id: 1,
-          image:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_R1q0635pY6k2PcnjB8LHydRlRfQNmdnWGBikXTlEGbVIvVpK4A",
-          title:
-            "ポートフォリオ SNSa twieifj saeifje wefjwoeij weojfwoie wefojwefoj",
-          description:
-            "普通の日本語の文章だったらどうだろう。さらに文字数を増やしていくとどうなるこれ以上はどこまでいけるのだろうか。まだまだ永遠にいけるのではないか",
-          languages: [],
-          good: 123,
-          author: "オーサーが普通の文章だった場合はどうなる"
-        },
-        {
-          id: 2,
-          image:
-            "https://www.pokemon.co.jp/ex/pika_vee/story/images/img_180713_08_01.png",
-          title:
-            "ポートフォリオ SNSうあああああああああああああああああああああああああああああああああ",
-          description: "qqqqqqqqqqqqqqqqqqqqqqqqq",
-          languages: ["JavaScript", "PHP"],
-          good: 123,
-          author: "2"
-        },
-        {
-          id: 3,
-          image:
-            "https://img-eshop.cdn.nintendo.net/i/5f4d7a7761aef871411cbd4e5440bba2d748c23271b71f52c3675981f8fcc5ab.jpg?w=1000",
-          title: "ポートフォリオ SNS",
-          description: "qqqqqqqqqqqqqqqqqqqqqqqqq",
-          languages: ["JavaScript", "PHP", "colob", "sdgw", "seerwt", "ewerwe"],
-          good: 123,
-          author: "3"
-        },
-        {
-          id: 4,
-          image:
-            "https://external-preview.redd.it/JqDcC6cFjSC5i64mGLb3n0iK4QMdEreotGnc2aVFkXM.jpg?auto=webp&s=166b8a16013b79c69c03db23a7e3b9889fd0335c",
-          title: "",
-          description: "",
-          languages: "",
-          good: "",
-          author: ""
-        },
-        {
-          id: 5,
-          image: "",
-          title: "",
-          description: "",
-          languages: "",
-          good: "",
-          author: ""
-        },
-        {
-          id: 6,
-          image: "",
-          title: "",
-          description: "",
-          languages: "",
-          good: "",
-          author: ""
-        },
-        {
-          id: 7,
-          image: "",
-          title:
-            "ポートフォリオ SNSうあああああああああああああああああああああああああああああああああ",
-          description:
-            "普通の日本語の文章だったらどうだろう。さらに文字数を増やしていくとどうなるこれ以上はどこまでいけるのだろうか。まだまだ永遠にいけるのではないか",
-          languages: ["JavaScript", "PHP"],
-          good: 123,
-          author:
-            "1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-        }
-      ]
+      portfolios: []
     };
   },
   methods: {
@@ -214,16 +138,16 @@ export default {
     getUserInfo: async function() {
       const { userId } = this.$route.params;
       const userInfo = await getUserInfo(userId);
-      //ポートフォリオも出来しだい
       this.name = userInfo.name;
       this.profImgUrl = userInfo.prof_img_url;
       this.selfIntroduction = userInfo.self_introduction;
-      this.programmingLanguages = userInfo.userProgrammingLanguages;
+      this.programmingLanguages = userInfo.programmingLanguages;
       this.programmingExperience = userInfo.programming_experience;
       this.gitHubAccount = userInfo.github_account;
       this.twitterAccount = userInfo.twitter_account;
       this.otherURL = userInfo.other_url;
       this.otherUrlDescription = userInfo.other_url_comment;
+      this.portfolios = userInfo.portfolios;
       if (!this.name) {
         this.$router.push({ name: "Home" });
         this.$emit("makeAlert", "ユーザーが見つかりません。");
