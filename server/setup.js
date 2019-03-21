@@ -19,6 +19,8 @@ const {
   updatePortfolio
 } = require("./controller/portfolio");
 
+const { increaseLike, decreaseLike } = require("./controller/like");
+
 const { authUser } = require("./auth.js");
 
 const { getThumbnailBase64 } = require("./controller/image");
@@ -46,6 +48,8 @@ const setup = function(app) {
   );
   app.post("/api/thumbnail", getThumbnailBase64);
   app.get(`/api/deleteportfolio/:portfolioId`, authUser, deletePortfolio);
+  app.get("/api/increaselike/:portfolioId", increaseLike);
+  app.get("/api/decreaselike/:portfolioId", decreaseLike);
 };
 
 module.exports = setup;

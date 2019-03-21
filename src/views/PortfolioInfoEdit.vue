@@ -89,7 +89,7 @@ export default {
     },
     editPortfolio: async function() {
       this.valid = false;
-      this.$emit("makeAlert", "更新処理をしています。少々お待ちください。");
+      this.$emit("makeAlert", "更新処理をしています。画面が変わるまでお待ちください。");
       if (this.thumbnailUrl) {
         await deleteThumbnailOnFirebase(this.userId, this.titleAtLoadingPage);
       }
