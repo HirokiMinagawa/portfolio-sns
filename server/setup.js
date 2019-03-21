@@ -11,7 +11,11 @@ const {
   getProgrammingLanguageList
 } = require("./controller/programminglanguage");
 
-const { savePortfolio, getPortfolioInfo } = require("./controller/portfolio");
+const {
+  savePortfolio,
+  getPortfolioInfo,
+  getAllPortfolioInfo
+} = require("./controller/portfolio");
 
 const { authUser } = require("./auth.js");
 
@@ -31,6 +35,7 @@ const setup = function(app) {
   app.use("/api/programminglanguage", getProgrammingLanguageList);
   app.post("/api/portfolio", authUser, validators.savePortfolio, savePortfolio);
   app.get(`/api/portfolioinfo/:portfolioId`, getPortfolioInfo);
+  app.get("/api/portfolioinfo", getAllPortfolioInfo);
   app.post("/api/thumbnail", getThumbnailBase64);
 };
 

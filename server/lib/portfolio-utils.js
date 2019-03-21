@@ -24,6 +24,7 @@ const getPortfolioInfoById = async portfolioId => {
   portfolioInfo.programmingLanguages = resultsOfProgrammingLanguage.map(
     obj => obj.name
   );
+  portfolioInfo.id = portfolioId;
   return portfolioInfo;
 };
 

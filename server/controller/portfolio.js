@@ -55,7 +55,31 @@ const getPortfolioInfo = async (req, res, next) => {
   }
 };
 
+const getAllPortfolioInfo = async (req, res, next) => {
+  try {
+    const connection = await db.getConnection();
+    const [resultsOfPortfolio] = await connection.query(
+      "select id from portfolios"
+    );
+    let portfolioIds = resultsOfPortfolio[0];
+    if (!portfolioIds) {
+      return res
+        .status(401)
+        .json({ message: "ポートフォリオが見つかりません。" });
+    } else {
+      const portfolios = [];
+      for (let i = 0; i < resultsOfPortfolio.length; i++) {
+        portfolios[i] = await getPortfolioInfoById(resultsOfPortfolio[i].id);
+      }
+      return res.status(200).json(portfolios);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   savePortfolio,
-  getPortfolioInfo
+  getPortfolioInfo,
+  getAllPortfolioInfo
 };

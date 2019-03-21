@@ -91,6 +91,13 @@ export const getPortfolioInfo = async function(portfolioId) {
   return res.json();
 };
 
+export const getAllPortfolioInfo = async function() {
+  const res = await fetch(`/api/portfolioinfo`, {
+    method: "get"
+  });
+  return res.json();
+};
+
 const getThumbnailBase64 = async function(portfolioUrl) {
   const res = await fetch("/api/thumbnail", {
     method: "post",
