@@ -7,8 +7,9 @@
           <v-icon>edit</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
-        <v-img :src="thumbnail" height="300px" alt="サムネイル"></v-img>
-        <a class="pl-5" :href="portfolioUrl">{{ portfolioUrl }}</a>
+        <a class="pl-5" :href="portfolioUrl">
+          <v-img :src="thumbnailUrl" height="300px" alt="サムネイル"></v-img>
+        </a>
         <v-card-title>
           <div class="display-1 pl-5 pt-5">{{ title }}</div>
         </v-card-title>
@@ -53,12 +54,6 @@
               >{{ programmingLanguage }}</v-chip>
             </div>
           </v-card-title>
-
-          <!-- <div>
-            <span class="grey--text">blob</span>
-            <br>
-            <span>{{ blob }}</span>
-          </div>-->
           <v-divider></v-divider>
         </v-list>
       </v-card>
@@ -67,10 +62,7 @@
 </template>
 
 <script>
-import {
-  checkEditRights,
-  getPortfolioInfo
-} from "@/lib/api-service";
+import { checkEditRights, getPortfolioInfo } from "@/lib/api-service";
 
 export default {
   data() {
@@ -83,7 +75,7 @@ export default {
       userName: "",
       userId: 0,
       like: 0,
-      thumbnail: ""
+      thumbnailUrl: ""
     };
   },
   methods: {
@@ -100,6 +92,12 @@ export default {
       this.userId = portfolioInfo.created_by;
       this.userName = portfolioInfo.userName;
       this.programmingLanguages = portfolioInfo.portfolioProgrammingLanguages;
+      if (portfolioInfo.thumbnail_url) {
+        this.thumbnailUrl = portfolioInfo.thumbnail_url;
+      } else {
+        this.thumbnailUrl =
+          "https://haishin.ebookjapan.jp/contents/release/image/noimage_m.png";
+      }
       this.checkEditRights();
       if (!this.portfolioUrl) {
         this.$router.push({ name: "Home" });

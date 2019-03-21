@@ -43,7 +43,7 @@ const getPortfolioInfo = async (req, res, next) => {
     const { portfolioId } = req.params;
     const connection = await db.getConnection();
     const [results] = await connection.query(
-      "select url, title, description, created_by from portfolios where id = ?",
+      "select url, title, description, thumbnail_url, created_by from portfolios where id = ?",
       [portfolioId]
     );
     const portfolio = results[0];
