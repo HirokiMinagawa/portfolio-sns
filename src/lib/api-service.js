@@ -169,3 +169,17 @@ export const deleteThumbnailOnFirebase = async function(userId, title) {
   const jpgRef = storageRef.child("thumbnail/" + fileName + ".jpg");
   await jpgRef.delete();
 };
+
+export const editPortfolio = async function(portfolioInfo) {
+  const idToken = await getUserToken();
+  if (!idToken) return false;
+  const res = await fetch(`/api/portfolio/edit`, {
+    method: "post",
+    body: JSON.stringify(portfolioInfo),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + idToken
+    }
+  });
+  return res.json();
+}

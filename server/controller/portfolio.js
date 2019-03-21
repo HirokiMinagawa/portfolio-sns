@@ -92,9 +92,51 @@ const deletePortfolio = async (req, res, next) => {
   }
 };
 
+const updatePortfolio = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty())
+    return res.status(400).json({ errors: errors.array() });
+  const { userId } = req;
+  try {
+    const {
+      portfolioId,
+      portfolioUrl,
+      title,
+      description,
+      programmingLanguages,
+      thumbnailUrl
+    } = req.body;
+    const connection = await db.getConnection();
+    await connection.query(
+      "update portfolios set url = ?, title = ?, description = ?, thumbnail_url = ? where id = ?",
+      [portfolioUrl, title, description, thumbnailUrl, portfolioId]
+    );
+    await connection.query(
+      "delete from  portfolio_programming_language where portfolio_id = ?",
+      [portfolioId]
+    );
+    for (let i = 0; i < programmingLanguages.length; i++) {
+      const [results] = await connection.query(
+        "select id from programming_languages where name = ?",
+        [programmingLanguages[i]]
+      );
+      if (results[0]) {
+        await connection.query(
+          "INSERT INTO `portfolio_programming_language` (portfolio_id, programming_language_id) VALUES (?, ?);",
+          [portfolioId, results[0].id]
+        );
+      }
+    }
+    return res.status(200).json({ message: "ポートフォリオを更新しました。" });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   savePortfolio,
   getPortfolioInfo,
   getAllPortfolioInfo,
-  deletePortfolio
+  deletePortfolio,
+  updatePortfolio
 };

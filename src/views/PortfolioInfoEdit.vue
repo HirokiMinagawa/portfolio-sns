@@ -43,7 +43,7 @@
 <script>
 import {
   getProgrammingLanguageList,
-  createPortfolio,
+  editPortfolio,
   getThumbnailUrl,
   checkEditRights,
   getPortfolioInfo,
@@ -56,10 +56,10 @@ export default {
     return {
       valid: true,
       dialog: false,
-      currentUserId: 0,
+      portfolioId: 0,
       portfolioUrl: "",
       title: "",
-      titleAtLoadingPage:"",
+      titleAtLoadingPage: "",
       description: "",
       programmingLanguages: [],
       programmingLanguageList: [],
@@ -87,32 +87,37 @@ export default {
         this.$emit("makeAlert", "編集権限がありません。");
       }
     },
-    createPortfolio: async function() {
+    editPortfolio: async function() {
       this.valid = false;
-      this.$emit("makeAlert", "登録処理をしています。少々お待ちください。");
+      this.$emit("makeAlert", "更新処理をしています。少々お待ちください。");
+      if (this.thumbnailUrl) {
+        await deleteThumbnailOnFirebase(this.userId, this.titleAtLoadingPage);
+      }
       const portfolioInfo = {
+        portfolioId: this.portfolioId,
         portfolioUrl: this.portfolioUrl,
         title: this.title,
         description: this.description,
         programmingLanguages: this.programmingLanguages,
         thumbnailUrl: await getThumbnailUrl(
           this.portfolioUrl,
-          this.currentUserId,
+          this.userId,
           this.title
         )
       };
-      const res = await createPortfolio(portfolioInfo);
+      const res = await editPortfolio(portfolioInfo);
       if (res.errors) {
         this.$emit("makeAlert", "入力内容にエラーがあります。");
         this.valid = true;
       } else {
-        this.$router.push({ name: "Home" });
+        this.$router.push({ name: "PortfolioInfo" });
         this.$emit("makeAlert", res.message);
       }
     },
     getPortfolioInfo: async function() {
       const { portfolioId } = this.$route.params;
       const portfolioInfo = await getPortfolioInfo(portfolioId);
+      this.portfolioId = portfolioInfo.id;
       this.portfolioUrl = portfolioInfo.url;
       this.title = portfolioInfo.title;
       this.titleAtLoadingPage = portfolioInfo.title;
@@ -141,7 +146,7 @@ export default {
       this.programmingLanguageList = res.name;
     },
     submit: function() {
-      this.createPortfolio();
+      this.editPortfolio();
     }
   },
   mounted() {
