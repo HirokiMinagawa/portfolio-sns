@@ -1,5 +1,6 @@
 const db = require("../db/connection");
 const { validationResult } = require("express-validator/check");
+const { getPortfolioInfoById } = require("../lib/portfolio-utils");
 
 const savePortfolio = async (req, res, next) => {
   const errors = validationResult(req);
@@ -41,33 +42,13 @@ const savePortfolio = async (req, res, next) => {
 const getPortfolioInfo = async (req, res, next) => {
   try {
     const { portfolioId } = req.params;
-    const connection = await db.getConnection();
-    const [results] = await connection.query(
-      "select url, title, description, thumbnail_url, created_by from portfolios where id = ?",
-      [portfolioId]
-    );
-    const portfolio = results[0];
-    if (!portfolio) {
+    const portfolioInfo = await getPortfolioInfoById(portfolioId);
+    if (!portfolioInfo) {
       return res
         .status(401)
         .json({ message: "ポートフォリオが見つかりません。" });
     } else {
-      const userId = portfolio.created_by;
-      const [resultsOfUser] = await connection.query(
-        "select name from users where id = ?",
-        [userId]
-      );
-      const user = resultsOfUser[0];
-      portfolio.userName = user.name;
-
-      const [resultsOfProgrammingLanguage] = await connection.query(
-        "select name from portfolio_programming_language ppl inner join programming_languages pl on ppl.programming_language_id = pl.id where portfolio_id = ?;",
-        [portfolioId]
-      );
-      portfolio.portfolioProgrammingLanguages = resultsOfProgrammingLanguage.map(
-        obj => obj.name
-      );
-      return res.status(200).json(portfolio);
+      return res.status(200).json(portfolioInfo);
     }
   } catch (error) {
     next(error);

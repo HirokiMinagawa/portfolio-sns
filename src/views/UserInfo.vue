@@ -96,7 +96,7 @@
                     <h4>
                       使用言語：
                       <span
-                        v-for="(language, i) in portfolio.portfolioProgrammingLanguages"
+                        v-for="(language, i) in portfolio.programmingLanguages"
                         :key="i"
                       >{{ language + " " }}</span>
                     </h4>
@@ -142,7 +142,7 @@ export default {
       this.name = userInfo.name;
       this.profImgUrl = userInfo.prof_img_url;
       this.selfIntroduction = userInfo.self_introduction;
-      this.programmingLanguages = userInfo.userProgrammingLanguages;
+      this.programmingLanguages = userInfo.programmingLanguages;
       this.programmingExperience = userInfo.programming_experience;
       this.gitHubAccount = userInfo.github_account;
       this.twitterAccount = userInfo.twitter_account;

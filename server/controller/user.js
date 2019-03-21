@@ -1,5 +1,6 @@
 const db = require("../db/connection");
 const { validationResult } = require("express-validator/check");
+const { getPortfolioInfoById } = require("../lib/portfolio-utils");
 
 const alreadyUserExists = async (req, res, next) => {
   return res.status(200).json({ message: "ログインしました。" });
@@ -89,25 +90,21 @@ const getUserInfo = async (req, res, next) => {
         "select name from user_programming_language upl inner join programming_languages pl on upl.programming_language_id = pl.id where user_id = ?;",
         [userId]
       );
-      user.userProgrammingLanguages = resultsOfprogrammingLanguage.map(
+      user.programmingLanguages = resultsOfprogrammingLanguage.map(
         obj => obj.name
       );
+
       const [resultsOfPortfolio] = await connection.query(
-        "select id, url, title, description, thumbnail_url from portfolios where created_by = ?;",
+        "select id from portfolios where created_by = ?;",
         [userId]
       );
-      let portfolios = resultsOfPortfolio[0];
-      if (portfolios) {
+      let portfolioIds = resultsOfPortfolio[0];
+      if (portfolioIds) {
+        const portfolios = [];
         for (let i = 0; i < resultsOfPortfolio.length; i++) {
-          const [results] = await connection.query(
-            "select name from portfolio_programming_language ppl inner join programming_languages pl on ppl.programming_language_id = pl.id where portfolio_id = ?;",
-            [resultsOfPortfolio[i].id]
-          );
-          resultsOfPortfolio[i].portfolioProgrammingLanguages = results.map(
-            obj => obj.name
-          );
+          portfolios[i] = await getPortfolioInfoById(resultsOfPortfolio[i].id);
         }
-        user.portfolios = resultsOfPortfolio;
+        user.portfolios = portfolios;
       }
       //ポートフォリオのライク数も実装
       return res.status(200).json(user);

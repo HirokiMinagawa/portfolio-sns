@@ -91,7 +91,7 @@ export default {
       this.description = portfolioInfo.description;
       this.userId = portfolioInfo.created_by;
       this.userName = portfolioInfo.userName;
-      this.programmingLanguages = portfolioInfo.portfolioProgrammingLanguages;
+      this.programmingLanguages = portfolioInfo.programmingLanguages;
       if (portfolioInfo.thumbnail_url) {
         this.thumbnailUrl = portfolioInfo.thumbnail_url;
       } else {
