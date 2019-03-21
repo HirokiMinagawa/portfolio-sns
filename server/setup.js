@@ -15,6 +15,8 @@ const { savePortfolio, getPortfolioInfo } = require("./controller/portfolio");
 
 const { authUser } = require("./auth.js");
 
+const { getThumbnailBase64 } = require("./controller/image");
+
 const setup = function(app) {
   app.use("/api/saveuser", authUser, alreadyUserExists);
   app.use("/api/currentuserid", authUser, getCurrentUserId);
@@ -29,6 +31,7 @@ const setup = function(app) {
   app.use("/api/programminglanguage", getProgrammingLanguageList);
   app.post("/api/portfolio", authUser, validators.savePortfolio, savePortfolio);
   app.get(`/api/portfolioinfo/:portfolioId`, getPortfolioInfo);
+  app.post("/api/thumbnail", getThumbnailBase64);
 };
 
 module.exports = setup;

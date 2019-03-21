@@ -32,7 +32,8 @@
 import {
   getProgrammingLanguageList,
   getcurrentUserId,
-  createPortfolio
+  createPortfolio,
+  getThumbnailUrl
 } from "@/lib/api-service";
 
 export default {
@@ -70,15 +71,23 @@ export default {
       }
     },
     createPortfolio: async function() {
+      this.valid = false;
+      this.$emit("makeAlert", "登録処理をしています。");
       const portfolioInfo = {
         portfolioUrl: this.portfolioUrl,
         title: this.title,
         description: this.description,
-        programmingLanguages: this.programmingLanguages
+        programmingLanguages: this.programmingLanguages,
+        thumbnailUrl: await getThumbnailUrl(
+          this.portfolioUrl,
+          this.currentUserId,
+          this.title
+        )
       };
       const res = await createPortfolio(portfolioInfo);
       if (res.errors) {
         this.$emit("makeAlert", "入力内容にエラーがあります。");
+        this.valid = true;
       } else {
         this.$router.push({ name: "Home" });
         this.$emit("makeAlert", res.message);

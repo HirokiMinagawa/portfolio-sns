@@ -54,6 +54,11 @@
             </div>
           </v-card-title>
 
+          <!-- <div>
+            <span class="grey--text">blob</span>
+            <br>
+            <span>{{ blob }}</span>
+          </div>-->
           <v-divider></v-divider>
         </v-list>
       </v-card>
@@ -62,7 +67,10 @@
 </template>
 
 <script>
-import { checkEditRights, getPortfolioInfo } from "@/lib/api-service";
+import {
+  checkEditRights,
+  getPortfolioInfo
+} from "@/lib/api-service";
 
 export default {
   data() {

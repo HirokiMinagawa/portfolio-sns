@@ -29,7 +29,7 @@ export default {
       cards: [
         {
           id: 1,
-          image: "",
+          image: "https://firebasestorage.googleapis.com/v0/b/portfoliosns.appspot.com/o/sample.jpg?alt=media&token=0b2c09dc-31c4-476c-a69a-7175c2bbcd78",
           title:
             "ポートフォリオ SNSa twieifj saeifje wefjwoeij weojfwoie wefojwefoj",
           description:

@@ -7,11 +7,17 @@ const savePortfolio = async (req, res, next) => {
     return res.status(400).json({ errors: errors.array() });
   const { userId } = req;
   try {
-    const { portfolioUrl, title, description, programmingLanguages } = req.body;
+    const {
+      portfolioUrl,
+      title,
+      description,
+      programmingLanguages,
+      thumbnailUrl
+    } = req.body;
     const connection = await db.getConnection();
     const [results] = await connection.query(
-      "insert into `portfolios` (url, title, description, created_by) VALUES (?, ?, ?, ?);",
-      [portfolioUrl, title, description, userId]
+      "insert into `portfolios` (url, title, description, thumbnail_url, created_by) VALUES (?, ?, ?, ?, ?);",
+      [portfolioUrl, title, description, thumbnailUrl, userId]
     );
     const { insertId } = results;
     for (let i = 0; i < programmingLanguages.length; i++) {
