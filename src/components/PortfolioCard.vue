@@ -7,17 +7,21 @@
           <v-card-title primary-title>
             <h3 class="headline">{{ portfolio.title }}</h3>
           </v-card-title>
+          <v-flex>
+            <v-btn flat icon color="pink">
+              <v-icon>favorite</v-icon>
+            </v-btn>
+            <span>{{ portfolio.like }}</span>
+          </v-flex>
           <v-card-text>
             <div>{{ portfolio.description }}</div>
-            <h4>
-              使用言語：
+            <h4>使用言語：
               <v-chip
                 v-for="(programmingLanguage, i) in portfolio.programmingLanguages"
                 :key="i"
               >{{ programmingLanguage }}</v-chip>
             </h4>
             <h4>{{ "作者：" + portfolio.userName }}</h4>
-            <h4>{{ "いいね：" + portfolio.good }}</h4>
           </v-card-text>
         </v-card>
       </v-flex>

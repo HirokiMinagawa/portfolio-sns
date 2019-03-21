@@ -25,6 +25,17 @@ const getPortfolioInfoById = async portfolioId => {
     obj => obj.name
   );
   portfolioInfo.id = portfolioId;
+
+  const [resultsOfLikes] = await connection.query(
+    "select count(*) from likes where portfolio_id = ?",
+    [portfolioId]
+  );
+  const like = resultsOfLikes[0];
+  if (like) {
+    portfolioInfo.like = like["count(*)"];
+  } else {
+    portfolioInfo.like = 0;
+  }
   return portfolioInfo;
 };
 

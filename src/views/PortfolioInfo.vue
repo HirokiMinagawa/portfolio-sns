@@ -17,10 +17,13 @@
         <v-container class="pl-5">
           <v-layout row>
             <v-flex>
-              <v-btn flat icon color="pink">
+              <v-btn @click="increaseLike" :disabled="!likeShow" flat icon color="pink">
                 <v-icon>favorite</v-icon>
               </v-btn>
               <span>{{ like }}</span>
+              <v-btn @click="decreaseLike" v-show="!likeShow" flat>
+                <span class="grey--text">いいねを取り消す</span>
+              </v-btn>
             </v-flex>
           </v-layout>
         </v-container>
@@ -62,12 +65,18 @@
 </template>
 
 <script>
-import { checkEditRights, getPortfolioInfo } from "@/lib/api-service";
+import {
+  checkEditRights,
+  getPortfolioInfo,
+  increaseLike,
+  decreaseLike
+} from "@/lib/api-service";
 
 export default {
   data() {
     return {
       editRights: false,
+      portfolioId: 0,
       description: "",
       portfolioUrl: "",
       title: "",
@@ -75,7 +84,8 @@ export default {
       userName: "",
       userId: 0,
       like: 0,
-      thumbnailUrl: ""
+      thumbnailUrl: "",
+      likeShow: true
     };
   },
   methods: {
@@ -83,15 +93,16 @@ export default {
       this.editRights = await checkEditRights(this.userId);
     },
     getPortfolioInfo: async function() {
-      //ライクも実装
       const { portfolioId } = this.$route.params;
       const portfolioInfo = await getPortfolioInfo(portfolioId);
+      this.portfolioId = portfolioInfo.id;
       this.portfolioUrl = portfolioInfo.url;
       this.title = portfolioInfo.title;
       this.description = portfolioInfo.description;
       this.userId = portfolioInfo.created_by;
       this.userName = portfolioInfo.userName;
       this.programmingLanguages = portfolioInfo.programmingLanguages;
+      this.like = portfolioInfo.like;
       if (portfolioInfo.thumbnail_url) {
         this.thumbnailUrl = portfolioInfo.thumbnail_url;
       } else {
@@ -103,6 +114,16 @@ export default {
         this.$router.push({ name: "Home" });
         this.$emit("makeAlert", "ポートフォリオが見つかりません。");
       }
+    },
+    increaseLike: async function() {
+      this.likeShow = false;
+      const { like } = await increaseLike(this.portfolioId);
+      this.like = like;
+    },
+    decreaseLike: async function() {
+      const { like } = await decreaseLike(this.portfolioId);
+      this.like = like;
+      this.likeShow = true;
     }
   },
   created() {

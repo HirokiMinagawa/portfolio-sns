@@ -106,7 +106,6 @@ const getUserInfo = async (req, res, next) => {
         }
         user.portfolios = portfolios;
       }
-      //ポートフォリオのライク数も実装
       return res.status(200).json(user);
     }
   } catch (error) {
