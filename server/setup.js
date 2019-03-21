@@ -14,7 +14,8 @@ const {
 const {
   savePortfolio,
   getPortfolioInfo,
-  getAllPortfolioInfo
+  getAllPortfolioInfo,
+  deletePortfolio
 } = require("./controller/portfolio");
 
 const { authUser } = require("./auth.js");
@@ -37,6 +38,7 @@ const setup = function(app) {
   app.get(`/api/portfolioinfo/:portfolioId`, getPortfolioInfo);
   app.get("/api/portfolioinfo", getAllPortfolioInfo);
   app.post("/api/thumbnail", getThumbnailBase64);
+  app.get(`/api/deleteportfolio/:portfolioId`, authUser, deletePortfolio);
 };
 
 module.exports = setup;

@@ -150,3 +150,22 @@ const base64ToBlob = base64 => {
   });
   return blob;
 };
+
+export const deletePortfolio = async function(portfolioId) {
+  const idToken = await getUserToken();
+  if (!idToken) return false;
+  const res = await fetch(`/api/deleteportfolio/${portfolioId}`, {
+    headers: {
+      Authorization: "Bearer " + idToken
+    }
+  });
+  return res.json();
+};
+
+export const deleteThumbnailOnFirebase = async function(userId, title) {
+  const storage = firebase.storage();
+  const storageRef = storage.ref();
+  const fileName = userId + ":" + title;
+  const jpgRef = storageRef.child("thumbnail/" + fileName + ".jpg");
+  await jpgRef.delete();
+};

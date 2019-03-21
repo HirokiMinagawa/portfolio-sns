@@ -78,8 +78,23 @@ const getAllPortfolioInfo = async (req, res, next) => {
   }
 };
 
+const deletePortfolio = async (req, res, next) => {
+  try {
+    const { portfolioId } = req.params;
+    const connection = await db.getConnection();
+    const [results] = await connection.query(
+      "delete from portfolios where id = ?",
+      [portfolioId]
+    );
+    return res.status(200).json({ message: "ポートフォリオを削除しました。" });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   savePortfolio,
   getPortfolioInfo,
-  getAllPortfolioInfo
+  getAllPortfolioInfo,
+  deletePortfolio
 };

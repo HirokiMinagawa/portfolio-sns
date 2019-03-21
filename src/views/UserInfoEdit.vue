@@ -130,7 +130,6 @@ export default {
     getUserInfo: async function() {
       const { userId } = this.$route.params;
       const userInfo = await getUserInfo(userId);
-      //ポートフォリオも出来しだい
       this.name = userInfo.name;
       this.profImgUrl = userInfo.prof_img_url;
       this.selfIntroduction = userInfo.self_introduction;

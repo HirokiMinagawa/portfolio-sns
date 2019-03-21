@@ -86,19 +86,18 @@
                 <v-list-tile-title>ポートフォリオ一覧</v-list-tile-title>
               </v-list-tile>
               <v-flex xs12 sm6 md4 lg3 v-for="portfolio in portfolios" :key="portfolio.id">
-                <v-card :href="portfolio.url">
+                <v-card :to="{name: 'PortfolioInfo', params: { portfolioId: portfolio.id }}">
                   <v-img :src="portfolio.thumbnail_url" height="200px"></v-img>
                   <v-card-title primary-title>
                     <h3 class="headline">{{ portfolio.title }}</h3>
                   </v-card-title>
                   <v-card-text>
                     <div>{{ portfolio.description }}</div>
-                    <h4>
-                      使用言語：
-                      <span
-                        v-for="(language, i) in portfolio.programmingLanguages"
+                    <h4>使用言語：
+                      <v-chip
+                        v-for="(programmingLanguage, i) in portfolio.programmingLanguages"
                         :key="i"
-                      >{{ language + " " }}</span>
+                      >{{ programmingLanguage }}</v-chip>
                     </h4>
                     <h4>{{ "いいね：" + portfolio.good }}</h4>
                   </v-card-text>
