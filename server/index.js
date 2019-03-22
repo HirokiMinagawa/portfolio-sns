@@ -14,7 +14,7 @@ app.listen(config.port, () =>
   console.info(`server started on port ${config.port}`)
 );
 
-app.use((req, res, next) => {
+app.use('/api/*', (req, res, next) => {
   res.status(404).json({ message: "ページが見つかりません。" });
 });
 
