@@ -16,7 +16,7 @@
             v-model="programmingLanguages"
             :items="programmingLanguageList"
             label="得意なプログラミング言語"
-            :rules="[v => v.length >= 1 || '入力必須項目です。']"
+            :rules="[v => (v && v.length >= 1) || '入力必須項目です。']"
             required
             multiple
             chips
@@ -50,14 +50,14 @@
 </template>
 
 <script>
+import firebase from "@/lib/firebase";
 import {
   checkEditRights,
   deleteCurrentUser,
   updateUserInfo,
-  getProgrammingLanguageList,
   getUserInfo
-} from "@/lib/api-service";
-import firebase from "@/lib/firebase";
+} from "@/lib/api-user";
+import { getProgrammingLanguageList } from "@/lib/api-programmingLanguage";
 
 export default {
   data() {

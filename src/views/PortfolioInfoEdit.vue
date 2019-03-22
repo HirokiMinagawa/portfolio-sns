@@ -16,7 +16,7 @@
             v-model="programmingLanguages"
             :items="programmingLanguageList"
             label="使用言語"
-            :rules="[v => v.length >= 1 || '入力必須項目です。']"
+            :rules="[v => (v && v.length >= 1) || '入力必須項目です。']"
             required
             multiple
             chips
@@ -42,14 +42,13 @@
 
 <script>
 import {
-  getProgrammingLanguageList,
   editPortfolio,
-  getThumbnailUrl,
-  checkEditRights,
   getPortfolioInfo,
-  deletePortfolio,
-  deleteThumbnailOnFirebase
-} from "@/lib/api-service";
+  deletePortfolio
+} from "@/lib/api-portfolio";
+import { checkEditRights } from "@/lib/api-user";
+import { getProgrammingLanguageList } from "@/lib/api-programmingLanguage";
+import { getThumbnailUrl, deleteThumbnailOnFirebase } from "@/lib/api-image";
 
 export default {
   data() {
@@ -89,7 +88,10 @@ export default {
     },
     editPortfolio: async function() {
       this.valid = false;
-      this.$emit("makeAlert", "更新処理をしています。画面が変わるまでお待ちください。");
+      this.$emit(
+        "makeAlert",
+        "更新処理をしています。画面が変わるまでお待ちください。"
+      );
       if (this.thumbnailUrl) {
         await deleteThumbnailOnFirebase(this.userId, this.titleAtLoadingPage);
       }

@@ -16,7 +16,7 @@
             v-model="programmingLanguages"
             :items="programmingLanguageList"
             label="使用言語"
-            :rules="[v => v.length >= 1 || '入力必須項目です。']"
+            :rules="[v => (v && v.length >= 1) || '入力必須項目です。']"
             required
             multiple
             chips
@@ -29,12 +29,10 @@
 </template>
 
 <script>
-import {
-  getProgrammingLanguageList,
-  getcurrentUserId,
-  createPortfolio,
-  getThumbnailUrl
-} from "@/lib/api-service";
+import { getProgrammingLanguageList } from "@/lib/api-programmingLanguage";
+import { createPortfolio } from "@/lib/api-portfolio";
+import { getcurrentUserId } from "@/lib/api-user";
+import { getThumbnailUrl } from "@/lib/api-image";
 
 export default {
   data() {
@@ -72,7 +70,10 @@ export default {
     },
     createPortfolio: async function() {
       this.valid = false;
-      this.$emit("makeAlert", "登録処理をしています。画面が変わるまでお待ちください。");
+      this.$emit(
+        "makeAlert",
+        "登録処理をしています。画面が変わるまでお待ちください。"
+      );
       const portfolioInfo = {
         portfolioUrl: this.portfolioUrl,
         title: this.title,

@@ -99,7 +99,8 @@
                   </v-flex>
                   <v-card-text>
                     <div>{{ portfolio.description }}</div>
-                    <h4>使用言語：
+                    <h4>
+                      使用言語：
                       <v-chip
                         v-for="(programmingLanguage, i) in portfolio.programmingLanguages"
                         :key="i"
@@ -117,7 +118,7 @@
 </template>
 
 <script>
-import { checkEditRights, getUserInfo } from "@/lib/api-service";
+import { checkEditRights, getUserInfo } from "@/lib/api-user";
 
 export default {
   data() {

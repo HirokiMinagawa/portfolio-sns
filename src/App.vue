@@ -30,14 +30,17 @@
       <v-alert v-model="alert" color="info" icon="info" @click="alert = false">{{ alertMessage }}</v-alert>
       <router-view @makeAlert="makeAlert"></router-view>
     </v-content>
+    <v-footer class="pa-3">
+      <v-spacer></v-spacer>
+      <div>&copy; {{ new Date().getFullYear() + " Look My Portfolio"}}</div>
+    </v-footer>
   </v-app>
 </template>
 
 <script>
 import Auth from "@/components/Auth";
 import firebase from "@/lib/firebase";
-import { saveLoginUser } from "@/lib/api-service";
-import { getcurrentUserId } from "@/lib/api-service";
+import { saveLoginUser, getcurrentUserId } from "@/lib/api-user";
 
 export default {
   name: "App",
