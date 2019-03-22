@@ -2,6 +2,9 @@
   "name": "portfolio-sns",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "10.x"
+  },
   "scripts": {
     "start": "npm run server & npm run serve",
     "server": "nodemon server/index.js",
