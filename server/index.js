@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const path = require('path');
 const config = require("./config");
 const setup = require("./setup");
 
@@ -17,9 +18,9 @@ app.use((req, res, next) => {
   res.status(404).json({ message: "ページが見つかりません。" });
 });
 
-app.use(express.static(__dirname + "/dist/"));
-app.get(/.*/, function(req, res) {
-  res.sendfile(__dirname + "/dist/index.html");
+app.use(express.static(path.join(__dirname, 'public')));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
 app.use((err, req, res, next) => {
