@@ -12,8 +12,8 @@ const getCurrentUserId = async (req, res, next) => {
 };
 
 const deleteCurrentUser = async (req, res, next) => {
-  const { userId } = req;
   try {
+    const { userId } = req;
     const connection = await db.getConnection();
     const [results] = await connection.query("delete from users where id = ?", [
       userId
@@ -25,11 +25,11 @@ const deleteCurrentUser = async (req, res, next) => {
 };
 
 const updateUserInfo = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty())
-    return res.status(400).json({ errors: errors.array() });
-  const { userId } = req;
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      return res.status(400).json({ errors: errors.array() });
+    const { userId } = req;
     const {
       selfIntroduction,
       programmingLanguages,

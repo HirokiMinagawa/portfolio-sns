@@ -20,14 +20,14 @@ const getThumbnailBase64 = async function(portfolioUrl) {
     const { base64 } = await getThumbnailBase64(portfolioUrl);
     if (base64 && !base64.message) {
       const fileName = currentUserId + ":" + title;
-      thumbnailUrl = await uploadImage(base64, fileName);
+      thumbnailUrl = await uploadThumbnailOnFirebase(base64, fileName);
       return thumbnailUrl;
     } else {
       return null;
     }
   };
   
-  const uploadImage = async function(base64, fileName) {
+  const uploadThumbnailOnFirebase = async function(base64, fileName) {
     const storage = firebase.storage();
     const storageRef = storage.ref();
     const jpgRef = storageRef.child("thumbnail/" + fileName + ".jpg");

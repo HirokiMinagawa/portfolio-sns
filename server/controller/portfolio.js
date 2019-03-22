@@ -3,11 +3,11 @@ const { validationResult } = require("express-validator/check");
 const { getPortfolioInfoById } = require("../lib/portfolio-utils");
 
 const savePortfolio = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty())
-    return res.status(400).json({ errors: errors.array() });
-  const { userId } = req;
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      return res.status(400).json({ errors: errors.array() });
+    const { userId } = req;
     const {
       portfolioUrl,
       title,
@@ -93,11 +93,11 @@ const deletePortfolio = async (req, res, next) => {
 };
 
 const updatePortfolio = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty())
-    return res.status(400).json({ errors: errors.array() });
-  const { userId } = req;
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      return res.status(400).json({ errors: errors.array() });
+    const { userId } = req;
     const {
       portfolioId,
       portfolioUrl,

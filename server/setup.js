@@ -25,6 +25,7 @@ const { authUser } = require("./auth.js");
 
 const { getThumbnailBase64 } = require("./controller/image");
 
+
 const setup = function(app) {
   app.use("/api/saveuser", authUser, alreadyUserExists);
   app.use("/api/currentuserid", authUser, getCurrentUserId);

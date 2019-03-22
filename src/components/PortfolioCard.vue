@@ -50,7 +50,6 @@
 
 <script>
 import { getAllPortfolioInfo } from "@/lib/api-portfolio";
-
 import { getProgrammingLanguageList } from "@/lib/api-programmingLanguage";
 
 export default {
