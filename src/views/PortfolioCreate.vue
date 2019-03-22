@@ -70,7 +70,10 @@ export default {
     },
     createPortfolio: async function() {
       this.valid = false;
-      this.$emit("makeAlert", "登録処理をしています。画面が変わるまでお待ちください。");
+      this.$emit(
+        "makeAlert",
+        "登録処理をしています。画面が変わるまでお待ちください。"
+      );
       const portfolioInfo = {
         portfolioUrl: this.portfolioUrl,
         title: this.title,
