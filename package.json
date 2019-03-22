@@ -9,7 +9,8 @@
     "start": "npm run server & npm run serve",
     "server": "nodemon server/index.js",
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build-client": "vue-cli-service build",
+    "build":"./build.sh",
     "lint": "vue-cli-service lint",
     "lint:fix": "vue-cli-service lint --fix",
     "test:unit": "vue-cli-service test:unit"
