@@ -30,6 +30,10 @@
       <v-alert v-model="alert" color="info" icon="info" @click="alert = false">{{ alertMessage }}</v-alert>
       <router-view @makeAlert="makeAlert"></router-view>
     </v-content>
+    <v-footer class="pa-3">
+      <v-spacer></v-spacer>
+      <div>&copy; {{ new Date().getFullYear() + " Look My Portfolio"}}</div>
+    </v-footer>
   </v-app>
 </template>
 
