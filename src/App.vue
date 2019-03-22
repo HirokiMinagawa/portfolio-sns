@@ -36,8 +36,7 @@
 <script>
 import Auth from "@/components/Auth";
 import firebase from "@/lib/firebase";
-import { saveLoginUser } from "@/lib/api-service";
-import { getcurrentUserId } from "@/lib/api-service";
+import { saveLoginUser, getcurrentUserId } from "@/lib/api-user";
 
 export default {
   name: "App",

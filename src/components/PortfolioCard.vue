@@ -33,7 +33,8 @@
           </v-flex>
           <v-card-text>
             <div>{{ portfolio.description }}</div>
-            <h4>使用言語：
+            <h4>
+              使用言語：
               <v-chip
                 v-for="(programmingLanguage, i) in portfolio.programmingLanguages"
                 :key="i"
@@ -48,10 +49,9 @@
 </template>
 
 <script>
-import {
-  getAllPortfolioInfo,
-  getProgrammingLanguageList
-} from "@/lib/api-service";
+import { getAllPortfolioInfo } from "@/lib/api-portfolio";
+
+import { getProgrammingLanguageList } from "@/lib/api-programmingLanguage";
 
 export default {
   data: function() {
@@ -59,7 +59,7 @@ export default {
       programmingLanguageList: [],
       selectedItem: [],
       portfolios: [],
-      filteredPortfolios: [],
+      filteredPortfolios: []
     };
   },
   methods: {

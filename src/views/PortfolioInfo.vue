@@ -65,12 +65,9 @@
 </template>
 
 <script>
-import {
-  checkEditRights,
-  getPortfolioInfo,
-  increaseLike,
-  decreaseLike
-} from "@/lib/api-service";
+import { getPortfolioInfo } from "@/lib/api-portfolio";
+import { checkEditRights } from "@/lib/api-user";
+import { increaseLike, decreaseLike } from "@/lib/api-like";
 
 export default {
   data() {

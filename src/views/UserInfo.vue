@@ -117,7 +117,7 @@
 </template>
 
 <script>
-import { checkEditRights, getUserInfo } from "@/lib/api-service";
+import { checkEditRights, getUserInfo } from "@/lib/api-user";
 
 export default {
   data() {
