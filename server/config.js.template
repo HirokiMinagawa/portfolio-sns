@@ -1,5 +1,5 @@
 const config = {
-  firebaseServiceAccountKey: {
+  firebaseAccountServiceKey: {
     "project_id": process.env.fb_project_id,
     "private_key": process.env.fb_private_key,
     "client_email": process.env.fb_client_email
