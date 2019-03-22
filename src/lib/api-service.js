@@ -135,7 +135,7 @@ const uploadImage = async function(base64, fileName) {
   return res;
 };
 
-const base64ToBlob = base64 => {
+export const base64ToBlob = base64 => {
   const byteString = atob(base64.split(",")[1]);
   const mimeType = base64.match(/(:)([a-z/]+)(;)/)[2];
   for (

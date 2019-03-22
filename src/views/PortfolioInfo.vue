@@ -29,11 +29,11 @@
         </v-container>
 
         <v-list two-line class="pl-5 pr-5">
-          <v-card-title v-show="!!userName">
+          <v-card-title @click="toUserInfo" v-show="!!userName">
             <div>
               <span class="grey--text">製作者</span>
               <br>
-              <span>{{ userName }}</span>
+              <a>{{ userName }}</a>
             </div>
           </v-card-title>
           <v-divider></v-divider>
@@ -124,6 +124,12 @@ export default {
       const { like } = await decreaseLike(this.portfolioId);
       this.like = like;
       this.likeShow = true;
+    },
+    toUserInfo: function() {
+      this.$router.push({
+        name: "UserInfo",
+        params: { userId: this.userId }
+      });
     }
   },
   created() {
