@@ -1,13 +1,13 @@
 <template>
-  <HelloWorld />
+  <PortfolioCard></PortfolioCard>
 </template>
 
 <script>
-  import HelloWorld from '../components/HelloWorld'
+import PortfolioCard from "../components/PortfolioCard";
 
-  export default {
-    components: {
-      HelloWorld
-    }
+export default {
+  components: {
+    PortfolioCard
   }
+};
 </script>
