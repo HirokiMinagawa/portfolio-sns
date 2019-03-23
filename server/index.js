@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const path = require('path');
 const config = require("./config");
 const setup = require("./setup");
 
@@ -13,8 +14,13 @@ app.listen(config.port, () =>
   console.info(`server started on port ${config.port}`)
 );
 
-app.use((req, res, next) => {
+app.use('/api/*', (req, res, next) => {
   res.status(404).json({ message: "ページが見つかりません。" });
+});
+
+app.use(express.static(path.join(__dirname, 'public')));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
 app.use((err, req, res, next) => {

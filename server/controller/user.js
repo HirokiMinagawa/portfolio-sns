@@ -12,19 +12,23 @@ const getCurrentUserId = async (req, res, next) => {
 };
 
 const deleteCurrentUser = async (req, res, next) => {
+  let connection;
   try {
     const { userId } = req;
-    const connection = await db.getConnection();
+    connection = await db.getConnection();
     const [results] = await connection.query("delete from users where id = ?", [
       userId
     ]);
     return res.status(200).json({ message: "ユーザー情報を削除しました。" });
   } catch (error) {
     next(error);
+  } finally {
+    await connection.end();
   }
 };
 
 const updateUserInfo = async (req, res, next) => {
+  let connection;
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty())
@@ -39,7 +43,7 @@ const updateUserInfo = async (req, res, next) => {
       otherURL,
       otherUrlDescription
     } = req.body;
-    const connection = await db.getConnection();
+    connection = await db.getConnection();
     await connection.query(
       "update users set self_introduction = ?, programming_experience = ?, github_account = ?, twitter_account = ?, other_url = ?, other_url_comment = ? where id = ?",
       [
@@ -71,13 +75,16 @@ const updateUserInfo = async (req, res, next) => {
     return res.status(200).json({ message: "ユーザー情報を更新しました。" });
   } catch (error) {
     next(error);
+  } finally {
+    await connection.end();
   }
 };
 
 const getUserInfo = async (req, res, next) => {
+  let connection;
   try {
     const { userId } = req.params;
-    const connection = await db.getConnection();
+    connection = await db.getConnection();
     const [results] = await connection.query(
       "select name, prof_img_url, self_introduction, programming_experience, github_account, twitter_account, other_url, other_url_comment from users where id = ?",
       [userId]
@@ -110,6 +117,8 @@ const getUserInfo = async (req, res, next) => {
     }
   } catch (error) {
     next(error);
+  } finally {
+    await connection.end();
   }
 };
 

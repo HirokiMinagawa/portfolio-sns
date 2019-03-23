@@ -18,6 +18,7 @@ const getLocalUserId = async function({ uid }) {
     [uid]
   );
   const user = results[0];
+  await connection.end();
   if (user) {
     return user.id;
   } else {
@@ -47,6 +48,7 @@ const authUser = async function(req, res, next) {
       "insert into users(auth_uid, name, prof_img_url) values(?,?,?)",
       [uid, name, picture]
     );
+    await connection.end();
     return res.status(200).json({ message: "登録しました。" });
   }
 

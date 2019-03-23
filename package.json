@@ -2,16 +2,22 @@
   "name": "portfolio-sns",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "10.x"
+  },
   "scripts": {
     "start": "npm run server & npm run serve",
     "server": "nodemon server/index.js",
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build-client": "vue-cli-service build",
+    "build": "./build.sh",
     "lint": "vue-cli-service lint",
     "lint:fix": "vue-cli-service lint --fix",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
     "express-validator": "^5.3.1",
     "firebase": "^5.8.6",
     "firebase-admin": "^7.0.0",
