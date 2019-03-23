@@ -3,6 +3,7 @@ const { validationResult } = require("express-validator/check");
 const { getPortfolioInfoById } = require("../lib/portfolio-utils");
 
 const savePortfolio = async (req, res, next) => {
+  let connection;
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty())
@@ -15,7 +16,7 @@ const savePortfolio = async (req, res, next) => {
       programmingLanguages,
       thumbnailUrl
     } = req.body;
-    const connection = await db.getConnection();
+    connection = await db.getConnection();
     const [results] = await connection.query(
       "insert into `portfolios` (url, title, description, thumbnail_url, created_by) VALUES (?, ?, ?, ?, ?);",
       [portfolioUrl, title, description, thumbnailUrl, userId]
@@ -36,6 +37,8 @@ const savePortfolio = async (req, res, next) => {
     return res.status(200).json({ message: "ポートフォリオを登録しました。" });
   } catch (error) {
     next(error);
+  } finally {
+    await connection.end();
   }
 };
 
@@ -56,8 +59,9 @@ const getPortfolioInfo = async (req, res, next) => {
 };
 
 const getAllPortfolioInfo = async (req, res, next) => {
+  let connection;
   try {
-    const connection = await db.getConnection();
+    connection = await db.getConnection();
     const [resultsOfPortfolio] = await connection.query(
       "select id from portfolios"
     );
@@ -75,13 +79,16 @@ const getAllPortfolioInfo = async (req, res, next) => {
     }
   } catch (error) {
     next(error);
+  } finally {
+    await connection.end();
   }
 };
 
 const deletePortfolio = async (req, res, next) => {
+  let connection;
   try {
     const { portfolioId } = req.params;
-    const connection = await db.getConnection();
+    connection = await db.getConnection();
     const [results] = await connection.query(
       "delete from portfolios where id = ?",
       [portfolioId]
@@ -89,10 +96,13 @@ const deletePortfolio = async (req, res, next) => {
     return res.status(200).json({ message: "ポートフォリオを削除しました。" });
   } catch (error) {
     next(error);
+  } finally {
+    await connection.end();
   }
 };
 
 const updatePortfolio = async (req, res, next) => {
+  let connection;
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty())
@@ -106,7 +116,7 @@ const updatePortfolio = async (req, res, next) => {
       programmingLanguages,
       thumbnailUrl
     } = req.body;
-    const connection = await db.getConnection();
+    connection = await db.getConnection();
     await connection.query(
       "update portfolios set url = ?, title = ?, description = ?, thumbnail_url = ? where id = ?",
       [portfolioUrl, title, description, thumbnailUrl, portfolioId]
@@ -130,6 +140,8 @@ const updatePortfolio = async (req, res, next) => {
     return res.status(200).json({ message: "ポートフォリオを更新しました。" });
   } catch (error) {
     next(error);
+  } finally {
+    await connection.end();
   }
 };
 

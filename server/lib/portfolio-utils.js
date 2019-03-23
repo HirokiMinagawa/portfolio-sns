@@ -7,8 +7,10 @@ const getPortfolioInfoById = async portfolioId => {
     [portfolioId]
   );
   const portfolioInfo = resultsOfPortfolioAndUser[0];
-  if (!portfolioInfo) return null;
-
+  if (!portfolioInfo) {
+    await connection.end();
+    return null;
+  }
   const [resultsOfProgrammingLanguage] = await connection.query(
     "select name from portfolio_programming_language ppl inner join programming_languages pl on ppl.programming_language_id = pl.id where portfolio_id = ?;",
     [portfolioId]
@@ -28,6 +30,7 @@ const getPortfolioInfoById = async portfolioId => {
   } else {
     portfolioInfo.like = 0;
   }
+  await connection.end();
   return portfolioInfo;
 };
 
